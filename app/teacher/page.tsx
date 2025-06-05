@@ -44,13 +44,25 @@ const mockSubmissions = [
   },
 ];
 
+type Submission = {
+  id: string;
+  studentId: string;
+  subjectId: string;
+  examType: string;
+  submissionText: string;
+  submissionDate: string;
+  score: number | null;
+  feedback: string | null;
+  graded: boolean;
+};
+
 export default function TeacherPage() {
   const router = useRouter();
   const [tab, setTab] = useState(0);
   const [selectedBatch, setSelectedBatch] = useState(mockBatches[0].id);
   const [selectedSubject, setSelectedSubject] = useState(mockSubjects[0].id);
   const [selectedExamType, setSelectedExamType] = useState(examTypes[0]);
-  const [selectedSubmission, setSelectedSubmission] = useState(null as any);
+  const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
   const [grade, setGrade] = useState("");
   const [feedback, setFeedback] = useState("");
 
