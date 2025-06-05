@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LogOut, Users, BookOpen, Layers, UserPlus, Book, BarChart2, Settings2 } from "lucide-react";
+import { LogOut, Users, BookOpen, Layers, UserPlus, BarChart2, Settings2 } from "lucide-react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 

@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Added Zap to the import list
-import { User, BookOpen, Sparkles, LineChart, Code, LogIn, Play, ArrowLeft, ArrowRight, CheckCircle, Zap } from 'lucide-react';
+import { User, BookOpen, Sparkles, LineChart, LogIn, Play, Zap, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image'; // Import Image component
 
 // Define the structure for each step's content item
 interface StepContentItem {
   title: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   gradient: string; // Tailwind CSS gradient classes
   path?: string; // Optional path for direct navigation on final step
   actionType?: 'login' | 'demo'; // Optional action type for final step
@@ -21,7 +21,7 @@ interface StepContentItem {
 interface WizardStep {
   label: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactNode;
   content: StepContentItem[];
 }
 
@@ -144,9 +144,8 @@ export default function GetStartedPage() {
           <Image
             src="/logonbg.png"
             alt="ArcaneAcademy Background Logo"
-            layout="fill"
-            objectFit="contain"
-            className="opacity-50" // Base opacity for the image
+            fill
+            className="object-contain opacity-50"
           />
           {/* Radial gradient overlay for glowing effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/20 via-transparent to-purple-900/20 rounded-full blur-2xl opacity-70"></div>

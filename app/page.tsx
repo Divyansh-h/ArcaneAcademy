@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, LineChart, Shield, User, Code, Play, LogIn, Sparkles, Zap, FileText, Edit, Lock, DollarSign } from 'lucide-react';
+import { BookOpen, User, Code, Play, LogIn, Sparkles, FileText, Edit, Lock, DollarSign } from 'lucide-react';
 import SplashScreen from '../components/SplashScreen';
 
 export default function Home() {
@@ -82,8 +82,8 @@ export default function Home() {
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
         >
-          <div className="relative">
-            <img src="/logonbg.png" alt="Logo" className="h-12 w-12 object-contain" />
+          <div className="relative h-12 w-12">
+            <Image src="/logonbg.png" alt="Logo" fill className="object-contain" />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-lg opacity-30"></div>
           </div>
           <span className="text-3xl font-black bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent tracking-tight">
