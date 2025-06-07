@@ -1,43 +1,45 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { LogOut, Users, ClipboardList, FileText, CheckCircle2 } from "lucide-react";
-import clsx from "clsx";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut, Users, ClipboardList, FileText, CheckCircle2, MessageCircle, Send } from 'lucide-react';
+import clsx from 'clsx';
+import Image from 'next/image';
 
 const mockBatches = [
-  { id: "B1", name: "Batch 1" },
-  { id: "B2", name: "Batch 2" },
+  { id: 'B1', name: 'Batch 1' },
+  { id: 'B2', name: 'Batch 2' },
 ];
 const mockSubjects = [
-  { id: "MATH101", name: "Mathematics" },
-  { id: "PHY101", name: "Physics" },
+  { id: 'MATH101', name: 'Mathematics' },
+  { id: 'PHY101', name: 'Physics' },
 ];
-const examTypes = ["Midterm", "Final", "Quiz", "Assignment"];
+const examTypes = ['Midterm', 'Final', 'Quiz', 'Assignment'];
 const mockStudents = [
-  { id: "S1", name: "Alice", section: "A", batch: "B1" },
-  { id: "S2", name: "Bob", section: "A", batch: "B1" },
-  { id: "S3", name: "Charlie", section: "B", batch: "B2" },
+  { id: 'S1', name: 'Alice', section: 'A', batch: 'B1' },
+  { id: 'S2', name: 'Bob', section: 'A', batch: 'B1' },
+  { id: 'S3', name: 'Charlie', section: 'B', batch: 'B2' },
 ];
 const mockSubmissions = [
   {
-    id: "sub1",
-    studentId: "S1",
-    subjectId: "MATH101",
-    examType: "Midterm",
-    submissionText: "My answer...",
-    submissionDate: "2024-05-01",
+    id: 'sub1',
+    studentId: 'S1',
+    subjectId: 'MATH101',
+    examType: 'Midterm',
+    submissionText: 'My answer...',
+    submissionDate: '2024-05-01',
     score: 90,
-    feedback: "Great job!",
+    feedback: 'Great job!',
     graded: true,
   },
   {
-    id: "sub2",
-    studentId: "S2",
-    subjectId: "PHY101",
-    examType: "Final",
-    submissionText: "My answer...",
-    submissionDate: "2024-05-10",
+    id: 'sub2',
+    studentId: 'S2',
+    subjectId: 'PHY101',
+    examType: 'Final',
+    submissionText: 'My answer...',
+    submissionDate: '2024-05-10',
     score: null,
     feedback: null,
     graded: false,
@@ -56,6 +58,13 @@ type Submission = {
   graded: boolean;
 };
 
+type ChatMessage = {
+  id: number;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: string;
+};
+
 export default function TeacherPage() {
   const router = useRouter();
   const [tab, setTab] = useState(0);
@@ -63,125 +72,259 @@ export default function TeacherPage() {
   const [selectedSubject, setSelectedSubject] = useState(mockSubjects[0].id);
   const [selectedExamType, setSelectedExamType] = useState(examTypes[0]);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
-  const [grade, setGrade] = useState("");
-  const [feedback, setFeedback] = useState("");
+  const [grade, setGrade] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredStudents = mockStudents.filter((s) => s.batch === selectedBatch);
   const filteredSubmissions = mockSubmissions.filter(
-    (s) =>
-      s.subjectId === selectedSubject && s.examType === selectedExamType
+    (s) => s.subjectId === selectedSubject && s.examType === selectedExamType
   );
 
+  const handleSendMessage = () => {
+    if (chatInput.trim() === '') return;
+    const newMessage: ChatMessage = {
+      id: chatMessages.length + 1,
+      text: chatInput,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString(),
+    };
+    setChatMessages((prev) => [...prev, newMessage]);
+    setChatInput('');
+    setIsTyping(true);
+
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponse: ChatMessage = {
+        id: chatMessages.length + 2,
+        text: `Received your query: "${newMessage.text}". How can I assist you further? (This is a mock response.)`,
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString(),
+      };
+      setChatMessages((prev) => [...prev, botResponse]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white relative overflow-hidden px-4 py-8">
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black px-4 py-8">
       {/* Animated Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/80 to-slate-900 animate-gradient-x" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/30 via-transparent to-purple-900/30 animate-pulse" />
-        <div className="pointer-events-none absolute inset-0 z-10">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className={clsx(
-                "absolute rounded-full opacity-20 blur-2xl animate-float",
-                i % 3 === 0
-                  ? "bg-purple-500 w-24 h-24 top-1/4 left-1/3"
-                  : i % 3 === 1
-                  ? "bg-blue-500 w-16 h-16 top-2/3 left-2/3"
-                  : "bg-pink-500 w-12 h-12 top-1/2 left-1/4"
-              )}
-              style={{
-                animationDelay: `${i * 0.7}s`,
-                animationDuration: `${6 + (i % 4)}s`,
-              }}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 animate-particle" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black animate-slow-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-gray-800/20 to-transparent animate-wave" />
+        {/* Floating Particles */}
+        {[...Array(10)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-gray-400/50 rounded-full"
+            initial={{ x: `${(i % 5) * 20}%`, y: '100%' }}
+            animate={{ y: '-100%', opacity: [0, 0.3, 0], x: `${(i % 5) * 20}%` }}
+            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'linear', delay: i * 0.4 }}
+            style={{ left: `${(i % 5) * 20}%` }}
+          />
+        ))}
+        {/* Pulsating Background Logo */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          initial={{ opacity: 0.1, scale: 0.8 }}
+          animate={{ opacity: 0.2, scale: 1 }}
+          transition={{ repeat: Infinity, repeatType: 'reverse', duration: 6, ease: 'easeInOut' }}
+        >
+          <div className="relative w-[60vmin] h-[60vmin] md:w-[40vmin] md:h-[40vmin]">
+            <Image
+              src="/logonbg.png"
+              alt="ArcaneAcademy Background Logo"
+              fill
+              className="object-contain filter grayscale brightness-150 opacity-50"
             />
-          ))}
-        </div>
+            <div className="absolute inset-0 bg-gray-400/20 rounded-full blur-3xl animate-pulse" />
+          </div>
+        </motion.div>
       </div>
-      <div className="relative z-10 w-full max-w-5xl mx-auto p-8 bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl">
+
+      {/* Header Logo */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="absolute top-6 left-6 z-30"
+      >
+        <div className="relative h-12 w-12">
+          <Image
+            src="/logonbg.png"
+            alt="ArcaneAcademy Logo"
+            fill
+            className="object-contain filter grayscale brightness-150"
+          />
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-gray-400/50"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="relative z-10 w-full max-w-5xl mx-auto p-8 bg-black/70 backdrop-blur-lg rounded-3xl border border-gray-700/50 shadow-2xl"
+      >
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-black mb-1 flex items-center gap-2">
-              <Users className="w-8 h-8 text-purple-400" />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h1 className="text-3xl font-extrabold text-gray-100 mb-1 flex items-center gap-2">
+              <Users className="w-8 h-8 text-gray-400 animate-pulse-slow" />
               Welcome, Teacher!
             </h1>
-            <div className="text-white/70 text-sm">Manage your students and assignments</div>
-          </div>
-          <button
-            onClick={() => router.push("/login")}
-            className="flex items-center gap-2 px-6 py-2 rounded-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg transition-all"
+            <div className="text-gray-400 text-sm font-mono">Manage your students and assignments</div>
+          </motion.div>
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            onClick={() => router.push('/login')}
+            className="flex items-center gap-2 px-6 py-2 rounded-xl font-bold bg-gray-800 text-gray-200 border border-gray-600 hover:bg-gray-900/70 hover:shadow-lg transition-all interactive-card"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+            whileTap={{ scale: 0.95 }}
           >
             <LogOut className="w-5 h-5" />
             Logout
-          </button>
+          </motion.button>
         </div>
+
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-white/20">
+        <div className="flex gap-2 mb-8 relative">
+          <motion.div
+            className="absolute bottom-0 h-1 bg-gray-400 rounded-full"
+            layoutId="tab-underline"
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          />
           {[
-            { label: "Student List", icon: <Users className="w-5 h-5" /> },
-            { label: "Create Assignment", icon: <ClipboardList className="w-5 h-5" /> },
-            { label: "Create Question Paper", icon: <FileText className="w-5 h-5" /> },
-            { label: "Grade Students", icon: <CheckCircle2 className="w-5 h-5" /> },
+            { label: 'Student List', icon: <Users className="w-5 h-5" /> },
+            { label: 'Create Assignment', icon: <ClipboardList className="w-5 h-5" /> },
+            { label: 'Create Question Paper', icon: <FileText className="w-5 h-5" /> },
+            { label: 'Grade Students', icon: <CheckCircle2 className="w-5 h-5" /> },
+            { label: 'Chatbot', icon: <MessageCircle className="w-5 h-5" /> },
           ].map((t, i) => (
-            <button
+            <motion.button
               key={i}
               onClick={() => setTab(i)}
               className={clsx(
-                "flex items-center gap-2 px-4 py-2 font-semibold transition rounded-t-lg",
-                tab === i
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow"
-                  : "text-white/70 hover:bg-white/10"
+                'relative flex items-center gap-2 px-4 py-2 font-semibold text-sm rounded-t-lg transition interactive-card',
+                tab === i ? 'bg-gray-800 border border-gray-600 text-gray-200' : 'text-gray-400 hover:bg-gray-900/70'
               )}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+              whileTap={{ scale: 0.95 }}
             >
               {t.icon}
               {t.label}
-            </button>
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                whileHover={{ opacity: 1 }}
+                initial={{ opacity: 0 }}
+              >
+                {[...Array(3)].map((_, j) => (
+                  <motion.div
+                    key={j}
+                    className="absolute w-1 h-1 bg-gray-200 rounded-full"
+                    initial={{ scale: 0, opacity: 0, x: 0, y: 0 }}
+                    animate={{
+                      scale: [0, 1, 0],
+                      opacity: [0, 0.5, 0],
+                      x: Math.cos(j * (2 * Math.PI / 3)) * 15,
+                      y: Math.sin(j * (2 * Math.PI / 3)) * 15,
+                    }}
+                    transition={{ duration: 0.4, delay: j * 0.05, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
+                    style={{ top: '50%', left: '50%' }}
+                  />
+                ))}
+              </motion.div>
+            </motion.button>
           ))}
         </div>
+
         {/* Tab Panels */}
         <div>
           {tab === 0 && (
             <div>
-              <div className="mb-4 flex flex-col md:flex-row gap-4 md:items-end">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mb-4 flex flex-col md:flex-row gap-4 md:items-end"
+              >
                 <div>
-                  <label className="block text-xs mb-1 text-white/60">Select Batch</label>
-                  <select
+                  <label className="block text-xs mb-1 text-gray-400 font-mono">Select Batch</label>
+                  <motion.select
                     value={selectedBatch}
                     onChange={(e) => setSelectedBatch(e.target.value)}
-                    className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white"
+                    className="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 interactive-card"
+                    whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
                   >
-                    {mockBatches.map((b) => (
-                      <option key={b.id} value={b.id}>
+                    {mockBatches.map((b, i) => (
+                      <motion.option
+                        key={b.id}
+                        value={b.id}
+                        className="bg-gray-900 text-gray-200"
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.05 }}
+                      >
                         {b.name}
-                      </option>
+                      </motion.option>
                     ))}
-                  </select>
+                  </motion.select>
                 </div>
-              </div>
-              <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
+              </motion.div>
+              <div className="overflow-x-auto rounded-xl border border-gray-700/50 bg-gray-900/30">
                 <table className="min-w-full text-sm">
                   <thead>
-                    <tr className="bg-white/10">
-                      <th className="px-4 py-2 text-left">Student ID</th>
-                      <th className="px-4 py-2 text-left">Name</th>
-                      <th className="px-4 py-2 text-left">Section</th>
-                      <th className="px-4 py-2 text-left">Batch</th>
+                    <tr className="bg-gray-800/50">
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Student ID</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Name</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Section</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Batch</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredStudents.length > 0 ? (
                       filteredStudents.map((s, i) => (
-                        <tr key={i} className="even:bg-white/5">
-                          <td className="px-4 py-2">{s.id}</td>
-                          <td className="px-4 py-2">{s.name}</td>
-                          <td className="px-4 py-2">{s.section}</td>
-                          <td className="px-4 py-2">{mockBatches.find((b) => b.id === s.batch)?.name}</td>
-                        </tr>
+                        <motion.tr
+                          key={i}
+                          className="even:bg-gray-800/20"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: i * 0.1 }}
+                          whileHover={{ scale: 1.01, boxShadow: '0 0 10px rgba(255, 255, 255, 0.2)' }}
+                        >
+                          <td className="px-4 py-2 text-gray-300">{s.id}</td>
+                          <td className="px-4 py-2 text-gray-300">{s.name}</td>
+                          <td className="px-4 py-2 text-gray-300">{s.section}</td>
+                          <td className="px-4 py-2 text-gray-300">{mockBatches.find((b) => b.id === s.batch)?.name}</td>
+                        </motion.tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4} className="text-center py-4">
+                        <td colSpan={4} className="text-center py-4 text-gray-400">
                           No students available for this batch.
                         </td>
                       </tr>
@@ -192,59 +335,88 @@ export default function TeacherPage() {
             </div>
           )}
           {tab === 1 && (
-            <div>
-              <div className="text-lg font-bold mb-2">Create Assignment</div>
-              <div className="text-white/70">Assignment creation coming soon...</div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-lg font-bold text-gray-200 mb-2">Create Assignment</div>
+              <div className="text-gray-400">Assignment creation coming soon...</div>
+            </motion.div>
           )}
           {tab === 2 && (
-            <div>
-              <div className="text-lg font-bold mb-2">Create Question Paper</div>
-              <div className="text-white/70">Question paper creation coming soon...</div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-lg font-bold text-gray-200 mb-2">Create Question Paper</div>
+              <div className="text-gray-400">Question paper creation coming soon...</div>
+            </motion.div>
           )}
           {tab === 3 && (
             <div>
-              <div className="flex flex-col md:flex-row gap-4 mb-4">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex flex-col md:flex-row gap-4 mb-4"
+              >
                 <div>
-                  <label className="block text-xs mb-1 text-white/60">Subject</label>
-                  <select
+                  <label className="block text-xs mb-1 text-gray-400 font-mono">Subject</label>
+                  <motion.select
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
-                    className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white"
+                    className="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 interactive-card"
+                    whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
                   >
-                    {mockSubjects.map((s) => (
-                      <option key={s.id} value={s.id}>
+                    {mockSubjects.map((s, i) => (
+                      <motion.option
+                        key={s.id}
+                        value={s.id}
+                        className="bg-gray-900 text-gray-200"
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.05 }}
+                      >
                         {s.name}
-                      </option>
+                      </motion.option>
                     ))}
-                  </select>
+                  </motion.select>
                 </div>
                 <div>
-                  <label className="block text-xs mb-1 text-white/60">Exam Type</label>
-                  <select
+                  <label className="block text-xs mb-1 text-gray-400 font-mono">Exam Type</label>
+                  <motion.select
                     value={selectedExamType}
                     onChange={(e) => setSelectedExamType(e.target.value)}
-                    className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white"
+                    className="px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 interactive-card"
+                    whileHover={{ boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
                   >
-                    {examTypes.map((t) => (
-                      <option key={t} value={t}>
+                    {examTypes.map((t, i) => (
+                      <motion.option
+                        key={t}
+                        value={t}
+                        className="bg-gray-900 text-gray-200"
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.05 }}
+                      >
                         {t}
-                      </option>
+                      </motion.option>
                     ))}
-                  </select>
+                  </motion.select>
                 </div>
-              </div>
-              <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
+              </motion.div>
+              <div className="overflow-x-auto rounded-xl border border-gray-700/50 bg-gray-900/30">
                 <table className="min-w-full text-sm">
                   <thead>
-                    <tr className="bg-white/10">
-                      <th className="px-4 py-2 text-left">Student Name</th>
-                      <th className="px-4 py-2 text-left">Exam Type</th>
-                      <th className="px-4 py-2 text-left">Submission Date</th>
-                      <th className="px-4 py-2 text-left">Status</th>
-                      <th className="px-4 py-2 text-left">Score</th>
-                      <th className="px-4 py-2 text-left">Actions</th>
+                    <tr className="bg-gray-800/50">
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Student Name</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Exam Type</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Submission Date</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Status</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Score</th>
+                      <th className="px-4 py-2 text-left text-gray-200 font-mono">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -252,10 +424,17 @@ export default function TeacherPage() {
                       filteredSubmissions.map((sub, i) => {
                         const student = mockStudents.find((s) => s.id === sub.studentId);
                         return (
-                          <tr key={i} className="even:bg-white/5">
-                            <td className="px-4 py-2">{student?.name || sub.studentId}</td>
-                            <td className="px-4 py-2">{sub.examType}</td>
-                            <td className="px-4 py-2">{new Date(sub.submissionDate).toLocaleDateString()}</td>
+                          <motion.tr
+                            key={i}
+                            className="even:bg-gray-800/20"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: i * 0.1 }}
+                            whileHover={{ scale: 1.01, boxShadow: '0 0 10px rgba(255, 255, 255, 0.2)' }}
+                          >
+                            <td className="px-4 py-2 text-gray-300">{student?.name || sub.studentId}</td>
+                            <td className="px-4 py-2 text-gray-300">{sub.examType}</td>
+                            <td className="px-4 py-2 text-gray-300">{new Date(sub.submissionDate).toLocaleDateString()}</td>
                             <td className="px-4 py-2">
                               {sub.graded ? (
                                 <span className="text-green-400 font-bold">Graded</span>
@@ -263,21 +442,23 @@ export default function TeacherPage() {
                                 <span className="text-yellow-400 font-bold">Not Graded</span>
                               )}
                             </td>
-                            <td className="px-4 py-2">{sub.score !== null ? sub.score : "-"}</td>
+                            <td className="px-4 py-2 text-gray-300">{sub.score !== null ? sub.score : '-'}</td>
                             <td className="px-4 py-2">
-                              <button
-                                className="px-4 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold"
+                              <motion.button
+                                className="px-4 py-1 rounded-lg bg-gray-800 text-gray-200 border border-gray-600 font-bold interactive-card"
                                 onClick={() => setSelectedSubmission(sub)}
+                                whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(255, 255, 255, 0.3)' }}
+                                whileTap={{ scale: 0.95 }}
                               >
-                                {sub.graded ? "Review" : "Grade"}
-                              </button>
+                                {sub.graded ? 'Review' : 'Grade'}
+                              </motion.button>
                             </td>
-                          </tr>
+                          </motion.tr>
                         );
                       })
                     ) : (
                       <tr>
-                        <td colSpan={6} className="text-center py-4">
+                        <td colSpan={6} className="text-center py-4 text-gray-400">
                           No submissions found for this subject and exam type.
                         </td>
                       </tr>
@@ -286,141 +467,308 @@ export default function TeacherPage() {
                 </table>
               </div>
               {/* Grading Panel */}
-              {selectedSubmission && (
-                <div className="mt-8 p-6 rounded-2xl bg-white/10 border border-white/20 shadow-lg">
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="text-lg font-bold">
-                      {selectedSubmission.graded ? "Reviewing" : "Grading"} Submission
+              <AnimatePresence>
+                {selectedSubmission && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6 }}
+                    className="mt-8 p-6 rounded-2xl bg-gray-900/30 border border-gray-700/50 shadow-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="text-lg font-bold text-gray-200">
+                        {selectedSubmission.graded ? 'Reviewing' : 'Grading'} Submission
+                      </div>
+                      <motion.button
+                        className="px-4 py-1 rounded-lg bg-gray-800/50 text-gray-200 font-bold interactive-card"
+                        onClick={() => {
+                          setSelectedSubmission(null);
+                          setGrade('');
+                          setFeedback('');
+                        }}
+                        whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(255, 255, 255, 0.3)' }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Close
+                      </motion.button>
                     </div>
-                    <button
-                      className="px-4 py-1 rounded-lg bg-white/20 text-white font-bold"
-                      onClick={() => {
-                        setSelectedSubmission(null);
-                        setGrade("");
-                        setFeedback("");
-                      }}
-                    >
-                      Close
-                    </button>
-                  </div>
-                  <div className="mb-2">
-                    <span className="font-bold">Student:</span>{" "}
-                    {mockStudents.find((s) => s.id === selectedSubmission.studentId)?.name ||
-                      selectedSubmission.studentId}
-                  </div>
-                  <div className="mb-2">
-                    <span className="font-bold">Submitted:</span>{" "}
-                    {new Date(selectedSubmission.submissionDate).toLocaleString()}
-                  </div>
-                  <div className="mb-4 p-3 rounded bg-white/5">
-                    <div className="font-bold mb-1">Submission Content:</div>
-                    <div>{selectedSubmission.submissionText}</div>
-                  </div>
-                  {!selectedSubmission.graded && (
-                    <div className="mb-4 flex gap-2">
-                      <button
-                        className="px-4 py-1 rounded-lg bg-green-500 text-white font-bold"
-                        onClick={() => setGrade("100")}
-                      >
-                        A+ (100)
-                      </button>
-                      <button
-                        className="px-4 py-1 rounded-lg bg-blue-500 text-white font-bold"
-                        onClick={() => setGrade("90")}
-                      >
-                        A (90)
-                      </button>
-                      <button
-                        className="px-4 py-1 rounded-lg bg-purple-500 text-white font-bold"
-                        onClick={() => setGrade("80")}
-                      >
-                        B (80)
-                      </button>
-                      <button
-                        className="px-4 py-1 rounded-lg bg-yellow-500 text-white font-bold"
-                        onClick={() => setGrade("70")}
-                      >
-                        C (70)
-                      </button>
-                      <button
-                        className="px-4 py-1 rounded-lg bg-orange-500 text-white font-bold"
-                        onClick={() => setGrade("60")}
-                      >
-                        D (60)
-                      </button>
-                      <button
-                        className="px-4 py-1 rounded-lg bg-red-500 text-white font-bold"
-                        onClick={() => setGrade("0")}
-                      >
-                        F (0)
-                      </button>
+                    <div className="mb-2 text-gray-300">
+                      <span className="font-bold">Student:</span>{' '}
+                      {mockStudents.find((s) => s.id === selectedSubmission.studentId)?.name || selectedSubmission.studentId}
                     </div>
-                  )}
-                  <div className="flex flex-col md:flex-row gap-4 mb-4">
-                    <input
-                      type="number"
-                      min={0}
-                      max={100}
-                      value={grade}
-                      onChange={(e) => setGrade(e.target.value)}
-                      className="flex-1 px-4 py-2 rounded-lg bg-white/20 border border-white/20 text-white"
-                      placeholder="Score"
-                      disabled={selectedSubmission.graded}
-                    />
-                    <input
-                      type="text"
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                      className="flex-1 px-4 py-2 rounded-lg bg-white/20 border border-white/20 text-white"
-                      placeholder="Feedback"
-                      disabled={selectedSubmission.graded}
-                    />
-                  </div>
-                  {!selectedSubmission.graded && (
-                    <button
-                      className="px-8 py-2 rounded-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg transition-all"
-                      onClick={() => {
-                        // Save logic here
-                        setSelectedSubmission({
-                          ...selectedSubmission,
-                          graded: true,
-                          score: Number(grade),
-                          feedback,
-                        });
-                        setGrade("");
-                        setFeedback("");
-                      }}
+                    <div className="mb-2 text-gray-300">
+                      <span className="font-bold">Submitted:</span>{' '}
+                      {new Date(selectedSubmission.submissionDate).toLocaleString()}
+                    </div>
+                    <div className="mb-4 p-3 rounded bg-gray-800/50">
+                      <div className="font-bold mb-1 text-gray-200">Submission Content:</div>
+                      <div className="text-gray-300">{selectedSubmission.submissionText}</div>
+                    </div>
+                    {!selectedSubmission.graded && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4 }}
+                        className="mb-4 flex flex-wrap gap-2"
+                      >
+                        {[
+                          { label: 'A+ (100)', score: '100', color: 'bg-green-500' },
+                          { label: 'A (90)', score: '90', color: 'bg-blue-500' },
+                          { label: 'B (80)', score: '80', color: 'bg-purple-500' },
+                          { label: 'C (70)', score: '70', color: 'bg-yellow-500' },
+                          { label: 'D (60)', score: '60', color: 'bg-orange-500' },
+                          { label: 'F (0)', score: '0', color: 'bg-red-500' },
+                        ].map((g, i) => (
+                          <motion.button
+                            key={g.score}
+                            className={clsx(
+                              'px-4 py-1 rounded-lg text-white font-bold interactive-card',
+                              g.color.replace('bg-', 'bg-gray-600')
+                            )}
+                            onClick={() => setGrade(g.score)}
+                            whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(255, 255, 255, 0.3)' }}
+                            whileTap={{ scale: 0.95 }}
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: i * 0.05 }}
+                          >
+                            {g.label}
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    )}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.2 }}
+                      className="flex flex-col md:flex-row gap-4 mb-4"
                     >
-                      Save Grade
-                    </button>
-                  )}
-                  {selectedSubmission.graded && (
-                    <div className="text-green-400 font-bold mt-2">Graded!</div>
-                  )}
-                </div>
-              )}
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        className="flex-1 px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 interactive-card"
+                        placeholder="Score"
+                        disabled={selectedSubmission.graded}
+                      />
+                      <input
+                        type="text"
+                        value={feedback}
+                        onChange={(e) => setFeedback(e.target.value)}
+                        className="flex-1 px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 interactive-card"
+                        placeholder="Feedback"
+                        disabled={selectedSubmission.graded}
+                      />
+                    </motion.div>
+                    {!selectedSubmission.graded && (
+                      <motion.button
+                        className="px-8 py-2 rounded-xl font-bold bg-gray-800 text-gray-200 border border-gray-600 hover:bg-gray-900/70 transition-all interactive-card"
+                        onClick={() => {
+                          setSelectedSubmission({
+                            ...selectedSubmission,
+                            graded: true,
+                            score: Number(grade),
+                            feedback,
+                          });
+                          setGrade('');
+                          setFeedback('');
+                        }}
+                        whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Save Grade
+                      </motion.button>
+                    )}
+                    {selectedSubmission.graded && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4 }}
+                        className="text-green-400 font-bold mt-2"
+                      >
+                        Graded!
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
+          {tab === 4 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col h-[500px]"
+            >
+              <div className="text-lg font-bold text-gray-200 mb-2">Teacher Assistant Chatbot</div>
+              <div className="flex-1 bg-gray-900/30 border border-gray-700/50 rounded-xl p-4 overflow-y-auto" ref={chatContainerRef}>
+                {chatMessages.length === 0 && (
+                  <div className="text-gray-400 text-center h-full flex items-center justify-center">
+                    Start a conversation with the assistant...
+                  </div>
+                )}
+                {chatMessages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className={clsx(
+                      'mb-4 p-3 rounded-lg max-w-[80%]',
+                      msg.sender === 'user' ? 'ml-auto bg-gray-800/50 text-gray-200' : 'mr-auto bg-gray-700/50 text-gray-300'
+                    )}
+                  >
+                    <div className="text-sm">{msg.text}</div>
+                    <div className="text-xs text-gray-400 font-mono mt-1">{msg.timestamp}</div>
+                  </motion.div>
+                ))}
+                {isTyping && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mr-auto p-3 rounded-lg bg-gray-700/50 max-w-[80%]"
+                  >
+                    <div className="flex gap-1">
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 0.3, repeat: Infinity }}
+                        className="w-2 h-2 bg-gray-400 rounded-full"
+                      />
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 0.3, repeat: Infinity, delay: 0.1 }}
+                        className="w-2 h-2 bg-gray-400 rounded-full"
+                      />
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 0.3, repeat: Infinity, delay: 0.2 }}
+                        className="w-2 h-2 bg-gray-400 rounded-full"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="mt-4 flex gap-2"
+              >
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  className="flex-1 px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 interactive-card"
+                  placeholder="Type your message..."
+                />
+                <motion.button
+                  className="px-4 py-2 rounded-lg bg-gray-800 text-gray-200 border border-gray-600 interactive-card"
+                  onClick={handleSendMessage}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Send className="w-5 h-5" />
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          )}
         </div>
-      </div>
+      </motion.div>
+
+      {/* Inline Styles */}
       <style jsx>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+        /* Animation Keyframes */
+        @keyframes particle {
+          0% { transform: translateY(0); opacity: 0.1; }
+          50% { opacity: 0.15; }
+          100% { transform: translateY(-10px); opacity: 0.1; }
         }
-        .animate-gradient-x {
-          background-size: 400% 400%;
-          animation: gradient-x 8s ease-in-out infinite;
+
+        @keyframes slow-pulse {
+          0% { opacity: 0.8; }
+          50% { opacity: 1; }
+          100% { opacity: 0.8; }
         }
-        @keyframes float {
-          0% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-20px) scale(1.05); }
-          100% { transform: translateY(0px) scale(1); }
+
+        @keyframes wave {
+          0% { transform: translateX(-100%); opacity: 0.2; }
+          50% { opacity: 0.3; }
+          100% { transform: translateX(100%); opacity: 0.2; }
         }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
+
+        @keyframes pulse-slow {
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+          50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+        }
+
+        /* Animation Classes */
+        .animate-particle {
+          animation: particle 8s ease-in-out infinite;
+        }
+
+        .animate-slow-pulse {
+          animation: slow-pulse 12s ease-in-out infinite;
+        }
+
+        .animate-wave {
+          animation: wave 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 2.5s ease-in-out infinite;
+        }
+
+        .animate-glow {
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Base Styles */
+        body {
+          background: #000000;
+          color: #e5e5e5;
+          font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-mono {
+          font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #4b4b4b;
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #666666;
+        }
+
+        /* Selection Styling */
+        ::selection {
+          background: rgba(107, 114, 128, 0.3);
+          color: white;
         }
       `}</style>
     </div>
   );
-} 
+}
