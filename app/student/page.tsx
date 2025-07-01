@@ -98,7 +98,7 @@ export default function StudentPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -109,7 +109,7 @@ export default function StudentPage() {
             src="/logonbg.png"
             alt="Loading..."
             fill
-            className="object-contain filter grayscale brightness-150 animate-pulse"
+            className="object-contain animate-pulse"
           />
         </motion.div>
       </div>
@@ -117,17 +117,17 @@ export default function StudentPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-black px-4 sm:px-6 py-8">
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 px-4 sm:px-6 py-8">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 animate-particle" />
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black animate-slow-pulse" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-gray-800/20 to-transparent animate-wave" />
+        <div className="absolute inset-0 opacity-5 animate-particle noise-bg" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100/50 to-indigo-200/50 animate-slow-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-200/20 to-transparent animate-wave" />
         {/* Floating Particles - Reduced on mobile */}
         {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gray-400/50 rounded-full"
+            className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-blue-400/50 rounded-full"
             initial={{ x: `${(i % 5) * 20}%`, y: '100%' }}
             animate={{ y: '-100%', opacity: [0, 0.3, 0], x: `${(i % 5) * 20}%` }}
             transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'linear', delay: i * 0.4 }}
@@ -146,9 +146,9 @@ export default function StudentPage() {
               src="/logonbg.png"
               alt="ArcaneAcademy Background Logo"
               fill
-              className="object-contain filter grayscale brightness-150 opacity-50"
+              className="object-contain opacity-30"
             />
-            <div className="absolute inset-0 bg-gray-400/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-3xl animate-pulse" />
           </div>
         </motion.div>
       </div>
@@ -165,10 +165,10 @@ export default function StudentPage() {
             src="/logonbg.png"
             alt="ArcaneAcademy Logo"
             fill
-            className="object-contain filter grayscale brightness-150"
+            className="object-contain"
           />
           <motion.div
-            className="absolute inset-0 rounded-full border-2 border-gray-400/50"
+            className="absolute inset-0 rounded-full border-2 border-blue-400/50"
             animate={{ rotate: 360 }}
             transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
           />
@@ -180,7 +180,7 @@ export default function StudentPage() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-[95%] sm:max-w-4xl mx-auto p-4 sm:p-8 bg-black/70 backdrop-blur-lg rounded-3xl border border-gray-700/50 shadow-2xl"
+        className="relative z-10 w-full max-w-[95%] sm:max-w-4xl mx-auto p-4 sm:p-8 bg-white/80 backdrop-blur-lg rounded-3xl border border-blue-200 shadow-2xl"
       >
         {/* Header - Stack on mobile */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
@@ -189,11 +189,11 @@ export default function StudentPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-100 mb-1 flex items-center gap-2">
-              <School className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 animate-pulse-slow" />
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-1 flex items-center gap-2">
+              <School className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 animate-pulse-slow" />
               Welcome, {mockStudent.name}
             </h1>
-            <div className="text-gray-400 text-xs sm:text-sm font-mono">
+            <div className="text-gray-600 text-xs sm:text-sm font-mono">
               Student ID: {mockStudent.id} | Section: {mockStudent.section}
             </div>
           </motion.div>
@@ -202,8 +202,8 @@ export default function StudentPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             onClick={() => router.push('/login')}
-            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 rounded-xl font-bold bg-gray-800 text-gray-200 border border-gray-600 hover:bg-gray-900/70 hover:shadow-lg transition-all interactive-card text-sm sm:text-base"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 rounded-xl font-bold bg-red-500 text-white border border-red-400 hover:bg-red-600 hover:shadow-lg transition-all interactive-card text-sm sm:text-base"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(239, 68, 68, 0.3)' }}
             whileTap={{ scale: 0.95 }}
           >
             <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -214,7 +214,7 @@ export default function StudentPage() {
         {/* Tabs - Scrollable on mobile */}
         <div className="flex gap-2 mb-6 sm:mb-8 relative overflow-x-auto pb-2 sm:pb-0">
           <motion.div
-            className="absolute bottom-0 h-1 bg-gray-400 rounded-full"
+            className="absolute bottom-0 h-1 bg-blue-500 rounded-full"
             layoutId="tab-underline"
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           />
@@ -229,12 +229,12 @@ export default function StudentPage() {
               onClick={() => setTab(i)}
               className={clsx(
                 'relative flex items-center gap-2 px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-t-lg transition interactive-card whitespace-nowrap',
-                tab === i ? 'bg-gray-800 border border-gray-600 text-gray-200' : 'text-gray-400 hover:bg-gray-900/70'
+                tab === i ? 'bg-blue-600 border border-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50'
               )}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)' }}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(59, 130, 246, 0.3)' }}
               whileTap={{ scale: 0.95 }}
             >
               {t.icon}

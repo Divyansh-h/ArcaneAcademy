@@ -67,15 +67,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100"
         >
           {/* Background Effects */}
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 animate-particle" />
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black animate-slow-pulse" />
-          <div className="absolute inset-0 bg-gradient-to-bl from-gray-800/20 to-transparent animate-wave" />
+          <div className="absolute inset-0 opacity-10 animate-particle noise-bg" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-100/50 to-indigo-200/50 animate-slow-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-bl from-blue-200/20 to-transparent animate-wave" />
           {/* Glitch Effect */}
           <motion.div
-            className="absolute inset-0 bg-gray-200/10"
+            className="absolute inset-0 bg-blue-200/10"
             variants={glitchVariants}
             initial="initial"
             animate="animate"
@@ -84,7 +84,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-gray-400/50 rounded-full"
+              className="absolute w-2 h-2 bg-blue-400/50 rounded-full"
               initial={{ x: `${(i * 20)}%`, y: '100%' }}
               animate={{ y: '-100%', opacity: [0, 0.3, 0] }}
               transition={{
@@ -105,7 +105,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
               rotateY: 0, 
               rotateX: 0, 
               y: 0,
-              boxShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
             }}
             transition={{
               duration: 1.8,
@@ -123,14 +123,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
               src="/logonbg.png"
               alt="ArcaneAcademy logo representing the gateway to education"
               fill
-              className="object-contain filter grayscale brightness-150 drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+              className="object-contain drop-shadow-[0_0_20px_rgba(59,130,246,0.4)]"
               priority
             />
             {/* Particle Burst */}
             {[...Array(10)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 bg-gray-200/70 rounded-full"
+                className="absolute w-2 h-2 bg-blue-400/70 rounded-full"
                 variants={particleVariants}
                 initial="initial"
                 animate="animate"
@@ -145,7 +145,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-3xl sm:text-4xl font-extrabold text-gray-100 tracking-tight"
+            className="mt-6 text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight"
           >
             ArcaneAcademy
           </motion.h1>
@@ -153,7 +153,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 text-lg text-gray-400 font-mono"
+            className="mt-2 text-lg text-gray-600 font-mono"
           >
             Empowering Education
           </motion.p>
