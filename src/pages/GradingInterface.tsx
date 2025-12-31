@@ -157,7 +157,7 @@ const GradingInterface = () => {
                         onLoadSuccess={onDocumentLoadSuccess}
                         className="flex flex-col gap-4"
                     >
-                        {Array.from(new Array(numPages), (el, index) => (
+                        {Array.from(new Array(numPages), (_, index) => (
                             <div key={`page_${index + 1}`} className="relative cursor-crosshair" onClick={(e) => handlePageClick(e, index + 1)}>
                                 <Page pageNumber={index + 1} renderTextLayer={false} renderAnnotationLayer={false} width={800} />
                                 {/* Render Overlay Annotations */}
