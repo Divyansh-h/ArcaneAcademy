@@ -171,20 +171,20 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-zinc-900 text-white">
+            <section className="py-24 bg-zinc-100 dark:bg-zinc-900">
                 <motion.div className="max-w-4xl mx-auto text-center px-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                    <h2 className="text-4xl font-bold mb-6">Ready to transform your grading experience?</h2>
-                    <p className="text-xl text-zinc-300 mb-8 max-w-2xl mx-auto">Join thousands of educators and students who trust Arcane Academy for their academic management needs.</p>
+                    <h2 className="text-4xl font-bold mb-6 text-zinc-900 dark:text-white">Ready to transform your grading experience?</h2>
+                    <p className="text-xl text-zinc-600 dark:text-zinc-300 mb-8 max-w-2xl mx-auto">Join thousands of educators and students who trust Arcane Academy for their academic management needs.</p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link to="/register"><Button size="lg" className="bg-white text-zinc-900 hover:bg-zinc-100 w-full sm:w-auto">Get Started Free<ArrowRight className="h-5 w-5 ml-2" /></Button></Link>
-                        <Link to="/login"><Button variant="outline" size="lg" className="border-zinc-600 text-white hover:bg-zinc-800 w-full sm:w-auto">Sign In</Button></Link>
+                        <Link to="/register"><Button size="lg" className="w-full sm:w-auto">Get Started Free<ArrowRight className="h-5 w-5 ml-2" /></Button></Link>
+                        <Link to="/login"><Button variant="outline" size="lg" className="w-full sm:w-auto">Sign In</Button></Link>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-center mt-10 gap-8 text-sm text-zinc-400">
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />Free to start</div>
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />No credit card required</div>
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />Setup in minutes</div>
+                    <div className="flex flex-wrap items-center justify-center mt-10 gap-8 text-sm text-zinc-500 dark:text-zinc-400">
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />Free to start</div>
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />No credit card required</div>
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />Setup in minutes</div>
                     </div>
                 </motion.div>
             </section>
