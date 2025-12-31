@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { GraduationCap, BookOpen, Users, Building, TrendingUp, Bell, Settings, LogOut, Plus, Search, MoreHorizontal, UserPlus, BookPlus, Shield, BarChart3, Calendar, Download, Filter, FileText } from "lucide-react";
+import { GraduationCap, BookOpen, Users, Building, TrendingUp, Bell, Settings, LogOut, Plus, Search, MoreHorizontal, UserPlus, BookPlus, Shield, BarChart3, Calendar, Download, Filter } from "lucide-react";
 import { useState } from "react";
 import { AssignmentUpload } from "@/components/AssignmentUpload";
 

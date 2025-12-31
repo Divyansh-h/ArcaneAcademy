@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+```javascript
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { PDFDocument, rgb } from 'pdf-lib';

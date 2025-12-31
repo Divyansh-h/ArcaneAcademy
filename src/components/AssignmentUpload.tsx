@@ -11,7 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, Upload } from 'lucide-react';
+import { X, FileText, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
 interface AssignmentUploadProps {
