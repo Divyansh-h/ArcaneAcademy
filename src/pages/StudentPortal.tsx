@@ -10,7 +10,6 @@ import { StatCard } from "@/components/ui/stat-card";
 import { PortalLayout } from "@/components/layout/PortalLayout";
 
 const StudentPortal = () => {
-    // Get user from local storage
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const studentName = user.name || "Student";
     const studentEmail = user.email || "student@university.edu";
@@ -38,13 +37,12 @@ const StudentPortal = () => {
     const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
     const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
-
     return (
         <PortalLayout portalName="Student Portal" userName={studentData.name} userBatch={studentData.batch}>
             <motion.div initial="hidden" animate="visible" variants={containerVariants}>
                 <motion.div variants={itemVariants} className="mb-8">
-                    <h1 className="text-3xl font-bold text-zinc-900 mb-2">Welcome back, {studentData.name.split(" ")[0]}! 👋</h1>
-                    <p className="text-zinc-600">Here's an overview of your academic progress for {studentData.semester}</p>
+                    <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">Welcome back, {studentData.name.split(" ")[0]}! 👋</h1>
+                    <p className="text-zinc-600 dark:text-zinc-400">Here's an overview of your academic progress for {studentData.semester}</p>
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -56,7 +54,7 @@ const StudentPortal = () => {
 
                 <motion.div variants={itemVariants}>
                     <Tabs defaultValue="overview" className="space-y-6">
-                        <TabsList className="bg-white border border-zinc-200 p-1">
+                        <TabsList className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-1">
                             <TabsTrigger value="overview">Overview</TabsTrigger>
                             <TabsTrigger value="assignments">Assignments</TabsTrigger>
                             <TabsTrigger value="subjects">Subjects</TabsTrigger>
@@ -69,13 +67,13 @@ const StudentPortal = () => {
                                     <CardHeader className="pb-4"><div className="flex items-center justify-between"><CardTitle className="text-lg">Pending Assignments</CardTitle><Button variant="ghost" size="sm">View All <ChevronRight className="h-4 w-4 ml-1" /></Button></div></CardHeader>
                                     <CardContent className="space-y-4">
                                         {assignments.filter((a) => a.status === "pending").map((assignment) => (
-                                            <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 hover:bg-zinc-100 transition-colors">
+                                            <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors">
                                                 <div className="flex items-start justify-between mb-3">
-                                                    <div><h4 className="font-medium text-zinc-900">{assignment.title}</h4><p className="text-sm text-zinc-500">{assignment.subject}</p></div>
+                                                    <div><h4 className="font-medium text-zinc-900 dark:text-white">{assignment.title}</h4><p className="text-sm text-zinc-500 dark:text-zinc-400">{assignment.subject}</p></div>
                                                     <Badge variant="outline"><Clock className="h-3 w-3 mr-1" />{assignment.dueDate}</Badge>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <div className="flex items-center justify-between text-sm"><span className="text-zinc-500">Progress</span><span className="font-medium text-zinc-900">{assignment.progress}%</span></div>
+                                                    <div className="flex items-center justify-between text-sm"><span className="text-zinc-500 dark:text-zinc-400">Progress</span><span className="font-medium text-zinc-900 dark:text-white">{assignment.progress}%</span></div>
                                                     <Progress value={assignment.progress} className="h-2" />
                                                 </div>
                                             </div>
@@ -86,8 +84,8 @@ const StudentPortal = () => {
                                     <CardHeader className="pb-4"><CardTitle className="text-lg">Notifications</CardTitle></CardHeader>
                                     <CardContent className="space-y-4">
                                         {notifications.map((notification) => (
-                                            <div key={notification.id} className={`p-4 rounded-xl transition-colors ${notification.read ? "bg-zinc-50" : "bg-blue-50 border border-blue-100"}`}>
-                                                <p className={`text-sm ${notification.read ? "text-zinc-600" : "text-zinc-900 font-medium"}`}>{notification.message}</p>
+                                            <div key={notification.id} className={`p-4 rounded-xl transition-colors ${notification.read ? "bg-zinc-50 dark:bg-zinc-800" : "bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800"}`}>
+                                                <p className={`text-sm ${notification.read ? "text-zinc-600 dark:text-zinc-400" : "text-zinc-900 dark:text-white font-medium"}`}>{notification.message}</p>
                                                 <p className="text-xs text-zinc-400 mt-1">{notification.time}</p>
                                             </div>
                                         ))}
@@ -96,79 +94,92 @@ const StudentPortal = () => {
                             </div>
                             <Card className="border-0 shadow-lg">
                                 <CardHeader className="pb-4"><div className="flex items-center justify-between"><CardTitle className="text-lg">Recent Grades</CardTitle><Badge variant="secondary"><BarChart3 className="h-3 w-3 mr-1" />Grade Analytics</Badge></div></CardHeader>
-
-                                <TabsContent value="assignments">
-                                    <Card className="border-0 shadow-lg">
-                                        <CardHeader><CardTitle>All Assignments</CardTitle><CardDescription>View and manage your assignments across all subjects</CardDescription></CardHeader>
-                                        <CardContent>
-                                            <div className="space-y-4">
-                                                {assignments.map((assignment) => (
-                                                    <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 hover:bg-zinc-100 transition-colors flex items-center justify-between">
-                                                        <div className="flex items-center gap-4">
-                                                            <div className={`p-2 rounded-lg ${assignment.status === "graded" ? "bg-emerald-100" : assignment.status === "submitted" ? "bg-blue-100" : "bg-amber-100"}`}>
-                                                                {assignment.status === "graded" ? <CheckCircle className="h-5 w-5 text-emerald-600" /> : assignment.status === "submitted" ? <Clock className="h-5 w-5 text-blue-600" /> : <AlertCircle className="h-5 w-5 text-amber-600" />}
-                                                            </div>
-                                                            <div><h4 className="font-medium text-zinc-900">{assignment.title}</h4><p className="text-sm text-zinc-500">{assignment.subject} • Due: {assignment.dueDate}</p></div>
-                                                        </div>
-                                                        <div className="flex items-center gap-4">
-                                                            {assignment.grade && <Badge variant="success">{assignment.grade}</Badge>}
-                                                            {assignment.status === "pending" && <Button size="sm">Submit</Button>}
-                                                            <Button variant="ghost" size="sm"><ChevronRight className="h-4 w-4" /></Button>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </TabsContent>
-
-                                <TabsContent value="subjects">
-                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <CardContent>
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                         {subjects.map((subject) => (
-                                            <Card key={subject.code} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                                                <CardContent className="p-6">
-                                                    <div className="flex items-start justify-between mb-4"><div className="p-3 bg-zinc-100 rounded-xl"><BookOpen className="h-5 w-5 text-zinc-700" /></div><Badge variant="outline">{subject.credits} Credits</Badge></div>
-                                                    <h3 className="font-semibold text-lg text-zinc-900 mb-1">{subject.name}</h3>
-                                                    <p className="text-sm text-zinc-500 mb-4">{subject.code}</p>
-                                                    <Separator className="my-4" />
-                                                    <div className="flex items-center justify-between"><span className="text-sm text-zinc-500">Current Grade</span><span className="text-2xl font-bold text-zinc-900">{subject.grade}</span></div>
-                                                </CardContent>
-                                            </Card>
+                                            <div key={subject.code} className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-center hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors">
+                                                <p className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">{subject.grade}</p>
+                                                <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate">{subject.name}</p>
+                                                <p className="text-xs text-zinc-500 dark:text-zinc-400">{subject.code}</p>
+                                            </div>
                                         ))}
                                     </div>
-                                </TabsContent>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
 
-                                <TabsContent value="grades">
-                                    <Card className="border-0 shadow-lg">
-                                        <CardHeader>
-                                            <div className="flex items-center justify-between">
-                                                <div><CardTitle>Grade Summary</CardTitle><CardDescription>Your academic performance for {studentData.semester}</CardDescription></div>
-                                                <div className="text-right"><p className="text-sm text-zinc-500">Current CGPA</p><p className="text-3xl font-bold text-zinc-900">{studentData.cgpa}</p></div>
+                        <TabsContent value="assignments">
+                            <Card className="border-0 shadow-lg">
+                                <CardHeader><CardTitle>All Assignments</CardTitle><CardDescription>View and manage your assignments across all subjects</CardDescription></CardHeader>
+                                <CardContent>
+                                    <div className="space-y-4">
+                                        {assignments.map((assignment) => (
+                                            <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors flex items-center justify-between">
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`p-2 rounded-lg ${assignment.status === "graded" ? "bg-emerald-100 dark:bg-emerald-900/50" : assignment.status === "submitted" ? "bg-blue-100 dark:bg-blue-900/50" : "bg-amber-100 dark:bg-amber-900/50"}`}>
+                                                        {assignment.status === "graded" ? <CheckCircle className="h-5 w-5 text-emerald-600" /> : assignment.status === "submitted" ? <Clock className="h-5 w-5 text-blue-600" /> : <AlertCircle className="h-5 w-5 text-amber-600" />}
+                                                    </div>
+                                                    <div><h4 className="font-medium text-zinc-900 dark:text-white">{assignment.title}</h4><p className="text-sm text-zinc-500 dark:text-zinc-400">{assignment.subject} • Due: {assignment.dueDate}</p></div>
+                                                </div>
+                                                <div className="flex items-center gap-4">
+                                                    {assignment.grade && <Badge variant="success">{assignment.grade}</Badge>}
+                                                    {assignment.status === "pending" && <Button size="sm">Submit</Button>}
+                                                    <Button variant="ghost" size="sm"><ChevronRight className="h-4 w-4" /></Button>
+                                                </div>
                                             </div>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full">
-                                                    <thead><tr className="border-b border-zinc-200"><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Subject</th><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Code</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Credits</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade Points</th></tr></thead>
-                                                    <tbody>
-                                                        {subjects.map((subject) => (
-                                                            <tr key={subject.code} className="border-b border-zinc-100 hover:bg-zinc-50">
-                                                                <td className="py-4 px-4 font-medium text-zinc-900">{subject.name}</td>
-                                                                <td className="py-4 px-4 text-zinc-600">{subject.code}</td>
-                                                                <td className="py-4 px-4 text-center text-zinc-600">{subject.credits}</td>
-                                                                <td className="py-4 px-4 text-center"><Badge variant="outline">{subject.grade}</Badge></td>
-                                                                <td className="py-4 px-4 text-center font-medium text-zinc-900">{subject.grade === "A+" ? 10 : subject.grade === "A" ? 9 : subject.grade === "A-" ? 8.5 : 8}</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="subjects">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {subjects.map((subject) => (
+                                    <Card key={subject.code} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                                        <CardContent className="p-6">
+                                            <div className="flex items-start justify-between mb-4"><div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl"><BookOpen className="h-5 w-5 text-zinc-700 dark:text-zinc-300" /></div><Badge variant="outline">{subject.credits} Credits</Badge></div>
+                                            <h3 className="font-semibold text-lg text-zinc-900 dark:text-white mb-1">{subject.name}</h3>
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">{subject.code}</p>
+                                            <Separator className="my-4" />
+                                            <div className="flex items-center justify-between"><span className="text-sm text-zinc-500 dark:text-zinc-400">Current Grade</span><span className="text-2xl font-bold text-zinc-900 dark:text-white">{subject.grade}</span></div>
                                         </CardContent>
                                     </Card>
-                                </TabsContent>
-                            </Tabs>
-                        </motion.div>
+                                ))}
+                            </div>
+                        </TabsContent>
+
+                        <TabsContent value="grades">
+                            <Card className="border-0 shadow-lg">
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <div><CardTitle>Grade Summary</CardTitle><CardDescription>Your academic performance for {studentData.semester}</CardDescription></div>
+                                        <div className="text-right"><p className="text-sm text-zinc-500 dark:text-zinc-400">Current CGPA</p><p className="text-3xl font-bold text-zinc-900 dark:text-white">{studentData.cgpa}</p></div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full">
+                                            <thead><tr className="border-b border-zinc-200 dark:border-zinc-700"><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">Subject</th><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">Code</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">Credits</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">Grade</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">Grade Points</th></tr></thead>
+                                            <tbody>
+                                                {subjects.map((subject) => (
+                                                    <tr key={subject.code} className="border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                                        <td className="py-4 px-4 font-medium text-zinc-900 dark:text-white">{subject.name}</td>
+                                                        <td className="py-4 px-4 text-zinc-600 dark:text-zinc-400">{subject.code}</td>
+                                                        <td className="py-4 px-4 text-center text-zinc-600 dark:text-zinc-400">{subject.credits}</td>
+                                                        <td className="py-4 px-4 text-center"><Badge variant="outline">{subject.grade}</Badge></td>
+                                                        <td className="py-4 px-4 text-center font-medium text-zinc-900 dark:text-white">{subject.grade === "A+" ? 10 : subject.grade === "A" ? 9 : subject.grade === "A-" ? 8.5 : 8}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                    </Tabs>
                 </motion.div>
+            </motion.div>
         </PortalLayout>
     );
 }
