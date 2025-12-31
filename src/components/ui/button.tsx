@@ -4,22 +4,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
     {
         variants: {
             variant: {
-                default: "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-sm hover:bg-zinc-800 dark:hover:bg-zinc-100 focus-visible:ring-zinc-900 dark:focus-visible:ring-white",
-                destructive: "bg-red-600 text-white shadow-sm hover:bg-red-700 focus-visible:ring-red-600",
-                outline: "border-2 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600",
+                default: "bg-violet-600 text-white shadow-sm hover:bg-violet-700 focus-visible:ring-violet-600 dark:bg-violet-600 dark:hover:bg-violet-500",
+                destructive: "bg-red-500 text-white shadow-sm hover:bg-red-600 focus-visible:ring-red-500",
+                outline: "border border-zinc-200 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800",
                 secondary: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
-                ghost: "text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800",
-                link: "text-zinc-900 dark:text-white underline-offset-4 hover:underline",
+                ghost: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white",
+                link: "text-violet-600 dark:text-violet-400 underline-offset-4 hover:underline",
             },
             size: {
-                default: "h-11 px-6 py-2",
-                sm: "h-9 rounded-md px-4 text-xs",
-                lg: "h-12 rounded-lg px-8 text-base",
-                icon: "h-10 w-10",
+                default: "h-10 px-5 py-2",
+                sm: "h-8 rounded-lg px-3 text-xs",
+                lg: "h-12 rounded-xl px-8 text-base",
+                icon: "h-10 w-10 rounded-lg",
             },
         },
         defaultVariants: {

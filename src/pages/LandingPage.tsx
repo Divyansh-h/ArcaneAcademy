@@ -5,15 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import {
-    GraduationCap, BarChart3, TrendingUp, Shield, ArrowRight, Zap, Star, CheckCircle, Users, BookOpen, Award, Play,
-} from "lucide-react";
+import { GraduationCap, BarChart3, TrendingUp, Shield, ArrowRight, Zap, CheckCircle, Users, BookOpen, Award } from "lucide-react";
 
 const features = [
-    { icon: GraduationCap, title: "Smart Grading", description: "AI-powered grading system with automatic CGPA calculation and intelligent performance tracking.", highlight: "AI-Powered" },
-    { icon: BarChart3, title: "Advanced Analytics", description: "Comprehensive grade distribution and performance analytics with visual insights.", highlight: "Real-time" },
-    { icon: TrendingUp, title: "Progress Tracking", description: "Visual representation of academic progress with predictive performance indicators.", highlight: "Predictive" },
-    { icon: Shield, title: "Secure Access", description: "Enterprise-grade security with role-based access control and data encryption.", highlight: "Enterprise" },
+    { icon: GraduationCap, title: "Smart Grading", description: "AI-powered grading with automatic CGPA calculation and performance insights." },
+    { icon: BarChart3, title: "Analytics", description: "Comprehensive grade distribution and performance analytics." },
+    { icon: TrendingUp, title: "Progress Tracking", description: "Visual progress indicators with predictive performance analysis." },
+    { icon: Shield, title: "Secure Access", description: "Enterprise-grade security with role-based access control." },
 ];
 
 const stats = [
@@ -24,9 +22,9 @@ const stats = [
 ];
 
 const demoOptions = [
-    { title: "Student Experience", icon: Users, description: "Explore the student dashboard with sample assignments and grades", path: "/student", color: "bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800" },
-    { title: "Teacher Portal", icon: BookOpen, description: "Try the teacher interface with grading tools and class management", path: "/teacher", color: "bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800" },
-    { title: "Admin Dashboard", icon: Award, description: "Experience the full administrative control panel", path: "/admin", color: "bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 border-violet-200 dark:border-violet-800" },
+    { title: "Student", icon: Users, description: "View assignments and track your grades", path: "/student" },
+    { title: "Teacher", icon: BookOpen, description: "Create assignments and grade submissions", path: "/teacher" },
+    { title: "Admin", icon: Award, description: "Manage users and configure the system", path: "/admin" },
 ];
 
 const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
@@ -37,156 +35,118 @@ export default function LandingPage() {
         <div className="min-h-screen bg-white dark:bg-zinc-950">
             <Header />
 
-            {/* Hero Section */}
-            <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-                <div className="absolute inset-0 -z-10">
-                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-zinc-100 dark:bg-zinc-800/50 rounded-full blur-3xl opacity-50" />
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-50 dark:bg-violet-900/20 rounded-full blur-3xl opacity-50" />
-                </div>
-
-                <div className="max-w-7xl mx-auto">
-                    <motion.div className="grid lg:grid-cols-2 gap-12 items-center" initial="hidden" animate="visible" variants={containerVariants}>
-                        <motion.div className="space-y-8" variants={itemVariants}>
-                            <div className="space-y-4">
-                                <Badge variant="outline" className="bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700">
-                                    <Zap className="h-3 w-3 mr-1" />Next-Gen Education Platform
-                                </Badge>
-                                <h1 className="text-5xl lg:text-6xl font-bold text-zinc-900 dark:text-white leading-tight">
-                                    Smart Grading<span className="block text-zinc-500 dark:text-zinc-400">Made Simple</span>
-                                </h1>
-                                <p className="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-lg">
-                                    Transform your academic experience with our intelligent grading system. Streamlined, secure, and designed for modern education.
-                                </p>
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Link to="/register"><Button size="lg" className="w-full sm:w-auto">Get Started<ArrowRight className="h-5 w-5 ml-2" /></Button></Link>
-                                <Link to="/login"><Button variant="outline" size="lg" className="w-full sm:w-auto"><Play className="h-5 w-5 mr-2" />Watch Demo</Button></Link>
-                            </div>
-
-                            <motion.div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-zinc-100 dark:border-zinc-800" variants={itemVariants}>
-                                {stats.map((stat, index) => (
-                                    <div key={index} className="text-center">
-                                        <div className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.number}</div>
-                                        <div className="text-sm text-zinc-600 dark:text-zinc-400">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </motion.div>
+            {/* Hero */}
+            <section className="pt-32 pb-20 px-6">
+                <div className="max-w-5xl mx-auto text-center">
+                    <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+                        <motion.div variants={itemVariants}>
+                            <Badge variant="outline" className="mb-6">
+                                <Zap className="h-3 w-3 mr-1" />Next-Gen Education Platform
+                            </Badge>
                         </motion.div>
-
-                        <motion.div className="relative" variants={itemVariants}>
-                            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-purple-500/20 dark:from-violet-500/10 dark:to-purple-500/10 rounded-3xl transform rotate-3 -z-10" />
-                            <Card className="relative rounded-3xl p-8 shadow-2xl">
-                                <CardContent className="p-0 space-y-6">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-3">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
-                                                <GraduationCap className="h-6 w-6 text-white" />
-                                            </div>
-                                            <div>
-                                                <div className="font-semibold text-zinc-900 dark:text-white">Arcane Dashboard</div>
-                                                <div className="text-sm text-zinc-500 dark:text-zinc-400">Grade Management</div>
-                                            </div>
-                                        </div>
-                                        <Badge variant="success">Live</Badge>
-                                    </div>
-                                    <div className="space-y-3">
-                                        {["Mathematics", "Physics", "Chemistry"].map((subject, i) => (
-                                            <div key={subject} className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-800 rounded-xl">
-                                                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{subject}</span>
-                                                <Badge variant="outline">{["A+", "A", "B+"][i]}</Badge>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-semibold text-zinc-900 dark:text-white">Overall CGPA</span>
-                                            <span className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">8.7</span>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                        <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-900 dark:text-white mb-6 leading-tight">
+                            Smart Grading<br />
+                            <span className="text-zinc-400">Made Simple</span>
+                        </motion.h1>
+                        <motion.p variants={itemVariants} className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10">
+                            Transform your academic experience with our intelligent grading system. Built for modern education.
+                        </motion.p>
+                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <Link to="/register">
+                                <Button size="lg">
+                                    Get Started<ArrowRight className="h-4 w-4 ml-2" />
+                                </Button>
+                            </Link>
+                            <Link to="/login">
+                                <Button variant="outline" size="lg">Sign In</Button>
+                            </Link>
+                        </motion.div>
+                        <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-4 gap-8 mt-16 pt-10 border-t border-zinc-200 dark:border-zinc-800">
+                            {stats.map((stat, index) => (
+                                <div key={index} className="text-center">
+                                    <div className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.number}</div>
+                                    <div className="text-sm text-zinc-500 dark:text-zinc-400">{stat.label}</div>
+                                </div>
+                            ))}
                         </motion.div>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section id="features" className="py-24 bg-zinc-50 dark:bg-zinc-900">
-                <div className="max-w-7xl mx-auto px-6">
-                    <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                        <Badge variant="outline" className="mb-4"><Star className="h-3 w-3 mr-1" />Features</Badge>
-                        <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Everything you need for modern grading</h2>
-                        <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">Powerful tools designed to streamline academic management and enhance learning outcomes.</p>
-                    </motion.div>
-
-                    <motion.div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}>
+            {/* Features */}
+            <section id="features" className="py-20 bg-zinc-50 dark:bg-zinc-900/50">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4">Everything you need</h2>
+                        <p className="text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto">Powerful tools designed to streamline academic management.</p>
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {features.map((feature, index) => (
-                            <motion.div key={index} variants={itemVariants}>
-                                <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                viewport={{ once: true }}
+                            >
+                                <Card className="h-full border-0 shadow-sm hover:shadow-md transition-shadow card-hover">
                                     <CardContent className="p-6">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="p-3 bg-gradient-to-br from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30 rounded-xl">
-                                                <feature.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
-                                            </div>
-                                            <Badge variant="default">{feature.highlight}</Badge>
+                                        <div className="p-2.5 bg-violet-50 dark:bg-violet-900/20 rounded-xl w-fit mb-4">
+                                            <feature.icon className="h-5 w-5 text-violet-600 dark:text-violet-400" />
                                         </div>
-                                        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">{feature.title}</h3>
-                                        <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{feature.description}</p>
+                                        <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">{feature.title}</h3>
+                                        <p className="text-sm text-zinc-500 dark:text-zinc-400">{feature.description}</p>
                                     </CardContent>
                                 </Card>
                             </motion.div>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* Demo Section */}
-            <section id="demo" className="py-24 bg-white dark:bg-zinc-950">
-                <div className="max-w-7xl mx-auto px-6">
-                    <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                        <Badge variant="outline" className="mb-4"><Play className="h-3 w-3 mr-1" />Try it out</Badge>
-                        <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Choose Your Experience</h2>
-                        <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">Explore different user roles and see how Arcane Academy transforms academic management.</p>
-                    </motion.div>
-
-                    <motion.div className="grid md:grid-cols-3 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}>
+            {/* Demo */}
+            <section id="demo" className="py-20">
+                <div className="max-w-4xl mx-auto px-6">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-4">Try it out</h2>
+                        <p className="text-zinc-600 dark:text-zinc-400">Explore different user experiences</p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-6">
                         {demoOptions.map((option, index) => (
-                            <motion.div key={index} variants={itemVariants}>
-                                <Link to={option.path}>
-                                    <Card className={`cursor-pointer transition-all duration-300 hover:shadow-xl card-hover border-2 ${option.color}`}>
-                                        <CardContent className="p-8 text-center">
-                                            <div className="flex justify-center mb-6">
-                                                <div className="p-4 bg-white dark:bg-zinc-800 rounded-2xl shadow-sm"><option.icon className="h-10 w-10 text-zinc-700 dark:text-zinc-300" /></div>
-                                            </div>
-                                            <h3 className="font-semibold text-xl mb-3 text-zinc-900 dark:text-white">{option.title}</h3>
-                                            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{option.description}</p>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </motion.div>
+                            <Link key={index} to={option.path}>
+                                <Card className="h-full border border-zinc-200 dark:border-zinc-800 hover:border-violet-300 dark:hover:border-violet-700 transition-colors cursor-pointer card-hover">
+                                    <CardContent className="p-6 text-center">
+                                        <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl w-fit mx-auto mb-4">
+                                            <option.icon className="h-6 w-6 text-zinc-600 dark:text-zinc-400" />
+                                        </div>
+                                        <h3 className="font-semibold text-zinc-900 dark:text-white mb-2">{option.title}</h3>
+                                        <p className="text-sm text-zinc-500 dark:text-zinc-400">{option.description}</p>
+                                    </CardContent>
+                                </Card>
+                            </Link>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-br from-zinc-900 via-violet-950 to-zinc-900 text-white">
-                <motion.div className="max-w-4xl mx-auto text-center px-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                    <h2 className="text-4xl font-bold mb-6">Ready to transform your grading experience?</h2>
-                    <p className="text-xl text-zinc-300 mb-8 max-w-2xl mx-auto">Join thousands of educators and students who trust Arcane Academy for their academic management needs.</p>
-
+            {/* CTA */}
+            <section className="py-20 bg-zinc-900 dark:bg-zinc-950">
+                <div className="max-w-3xl mx-auto text-center px-6">
+                    <h2 className="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
+                    <p className="text-zinc-400 mb-8">Join thousands who trust Arcane Academy for academic management.</p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link to="/register"><Button size="lg" className="bg-white text-zinc-900 hover:bg-zinc-100 w-full sm:w-auto">Get Started Free<ArrowRight className="h-5 w-5 ml-2" /></Button></Link>
-                        <Link to="/login"><Button variant="outline" size="lg" className="border-zinc-600 text-white hover:bg-zinc-800 w-full sm:w-auto">Sign In</Button></Link>
+                        <Link to="/register">
+                            <Button size="lg" className="bg-white text-zinc-900 hover:bg-zinc-100">
+                                Get Started Free<ArrowRight className="h-4 w-4 ml-2" />
+                            </Button>
+                        </Link>
                     </div>
-
-                    <div className="flex flex-wrap items-center justify-center mt-10 gap-8 text-sm text-zinc-400">
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />Free to start</div>
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />No credit card required</div>
-                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-400" />Setup in minutes</div>
+                    <div className="flex flex-wrap items-center justify-center mt-8 gap-6 text-sm text-zinc-500">
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />Free to start</div>
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />No credit card</div>
+                        <div className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-emerald-500" />Quick setup</div>
                     </div>
-                </motion.div>
+                </div>
             </section>
 
             <Footer />
