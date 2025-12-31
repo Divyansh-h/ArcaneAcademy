@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { GraduationCap, ArrowLeft, Mail, Lock, User as UserIcon, BookOpen, Shield, Check } from "lucide-react";
+import { GraduationCap, ArrowLeft, Mail, Lock, User as UserIcon, BookOpen, Shield, Check, Eye, EyeOff } from "lucide-react";
 import api from "@/lib/api";
 
 const roles = [
@@ -16,13 +16,31 @@ const roles = [
     { id: "admin", name: "Admin", icon: Shield, description: "Full system access and user management" },
 ];
 
+const getPasswordStrength = (password: string): { score: number; label: string; color: string } => {
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (password.length >= 12) score++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+    if (score <= 1) return { score, label: "Weak", color: "bg-red-500" };
+    if (score <= 2) return { score, label: "Fair", color: "bg-orange-500" };
+    if (score <= 3) return { score, label: "Good", color: "bg-yellow-500" };
+    if (score <= 4) return { score, label: "Strong", color: "bg-emerald-500" };
+    return { score, label: "Very Strong", color: "bg-emerald-600" };
+};
+
 export default function RegisterPage() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [selectedRole, setSelectedRole] = useState<string>("student");
     const [isLoading, setIsLoading] = useState(false);
+
+    const passwordStrength = useMemo(() => getPasswordStrength(password), [password]);
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,7 +68,7 @@ export default function RegisterPage() {
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex">
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-zinc-900 via-violet-950 to-zinc-900 text-white p-12 flex-col justify-between">
+            <div className="hidden lg:flex lg:w-1/2 bg-zinc-900 text-white p-12 flex-col justify-between">
                 <Link to="/" className="flex items-center gap-2 group">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-zinc-900 transition-transform group-hover:scale-105">
                         <GraduationCap className="h-5 w-5" />
@@ -98,9 +116,9 @@ export default function RegisterPage() {
                                     <div className="grid grid-cols-3 gap-3">
                                         {roles.map((role) => (
                                             <button key={role.id} type="button" onClick={() => setSelectedRole(role.id)}
-                                                className={`p-3 rounded-xl border-2 transition-all duration-200 ${selectedRole === role.id ? "border-violet-600 bg-violet-600 text-white" : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600"}`}>
-                                                <role.icon className={`h-5 w-5 mx-auto mb-1 ${selectedRole === role.id ? "text-white" : "text-zinc-600 dark:text-zinc-300"}`} />
-                                                <span className={`text-xs font-medium ${selectedRole === role.id ? "text-white" : "text-zinc-900 dark:text-white"}`}>{role.name}</span>
+                                                className={`p-3 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] ${selectedRole === role.id ? "border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-lg" : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600"}`}>
+                                                <role.icon className={`h-5 w-5 mx-auto mb-1 ${selectedRole === role.id ? "text-white dark:text-zinc-900" : "text-zinc-600 dark:text-zinc-300"}`} />
+                                                <span className={`text-xs font-medium ${selectedRole === role.id ? "text-white dark:text-zinc-900" : "text-zinc-900 dark:text-white"}`}>{role.name}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -128,12 +146,24 @@ export default function RegisterPage() {
                                     <label htmlFor="password" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</label>
                                     <div className="relative">
                                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-                                        <Input id="password" type="password" placeholder="Create a strong password" value={password} onChange={(e) => setPassword(e.target.value)} className="pl-10" required minLength={8} />
+                                        <Input id="password" type={showPassword ? "text" : "password"} placeholder="Create a strong password" value={password} onChange={(e) => setPassword(e.target.value)} className="pl-10 pr-10" required minLength={8} />
+                                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+                                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                        </button>
                                     </div>
-                                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Must be at least 8 characters</p>
+                                    {password && (
+                                        <div className="space-y-2">
+                                            <div className="flex gap-1">
+                                                {[1, 2, 3, 4, 5].map((i) => (
+                                                    <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= passwordStrength.score ? passwordStrength.color : "bg-zinc-200 dark:bg-zinc-700"}`} />
+                                                ))}
+                                            </div>
+                                            <p className="text-xs text-zinc-500 dark:text-zinc-400">Password strength: <span className={`font-medium ${passwordStrength.score >= 4 ? "text-emerald-600 dark:text-emerald-400" : passwordStrength.score >= 3 ? "text-yellow-600 dark:text-yellow-400" : "text-red-600 dark:text-red-400"}`}>{passwordStrength.label}</span></p>
+                                        </div>
+                                    )}
                                 </div>
 
-                                <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                                <Button type="submit" className="w-full" size="lg" disabled={isLoading || password.length < 8}>
                                     {isLoading ? "Creating account..." : "Create account"}
                                 </Button>
 
@@ -144,7 +174,7 @@ export default function RegisterPage() {
                                 <Separator />
 
                                 <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
-                                    Already have an account? <Link to="/login" className="font-medium text-violet-600 dark:text-violet-400 hover:underline">Sign in</Link>
+                                    Already have an account? <Link to="/login" className="font-medium text-zinc-900 dark:text-white hover:underline">Sign in</Link>
                                 </p>
                             </form>
                         </CardContent>

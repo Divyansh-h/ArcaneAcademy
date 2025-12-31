@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { GraduationCap, ArrowLeft, Mail, Lock, User, BookOpen, Shield } from "lucide-react";
+import { GraduationCap, ArrowLeft, Mail, Lock, User, BookOpen, Shield, Eye, EyeOff } from "lucide-react";
 import api from "@/lib/api";
 
 const roles = [
@@ -20,6 +20,8 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const [selectedRole, setSelectedRole] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +38,9 @@ export default function LoginPage() {
 
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
+            if (rememberMe) {
+                localStorage.setItem('rememberMe', 'true');
+            }
 
             navigate(`/${selectedRole}`);
         } catch (error) {
@@ -48,7 +53,7 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex">
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-zinc-900 via-violet-950 to-zinc-900 text-white p-12 flex-col justify-between">
+            <div className="hidden lg:flex lg:w-1/2 bg-zinc-900 text-white p-12 flex-col justify-between">
                 <Link to="/" className="flex items-center gap-2 group">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-zinc-900 transition-transform group-hover:scale-105">
                         <GraduationCap className="h-5 w-5" />
@@ -88,9 +93,9 @@ export default function LoginPage() {
                                     <div className="grid grid-cols-3 gap-3">
                                         {roles.map((role) => (
                                             <button key={role.id} type="button" onClick={() => setSelectedRole(role.id)}
-                                                className={`p-4 rounded-xl border-2 transition-all duration-200 ${selectedRole === role.id ? "border-violet-600 bg-violet-600 text-white" : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600"}`}>
-                                                <role.icon className={`h-6 w-6 mx-auto mb-2 ${selectedRole === role.id ? "text-white" : "text-zinc-700 dark:text-zinc-300"}`} />
-                                                <span className={`text-sm font-medium ${selectedRole === role.id ? "text-white" : "text-zinc-900 dark:text-white"}`}>{role.name}</span>
+                                                className={`p-4 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] ${selectedRole === role.id ? "border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-lg" : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600"}`}>
+                                                <role.icon className={`h-6 w-6 mx-auto mb-2 ${selectedRole === role.id ? "text-white dark:text-zinc-900" : "text-zinc-700 dark:text-zinc-300"}`} />
+                                                <span className={`text-sm font-medium ${selectedRole === role.id ? "text-white dark:text-zinc-900" : "text-zinc-900 dark:text-white"}`}>{role.name}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -114,8 +119,16 @@ export default function LoginPage() {
                                     </div>
                                     <div className="relative">
                                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-                                        <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="pl-10" required />
+                                        <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="pl-10 pr-10" required />
+                                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
+                                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                        </button>
                                     </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    <input type="checkbox" id="remember" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-600 text-zinc-900 dark:text-white focus:ring-zinc-500 dark:focus:ring-zinc-400" />
+                                    <label htmlFor="remember" className="text-sm text-zinc-600 dark:text-zinc-400">Remember me</label>
                                 </div>
 
                                 <Button type="submit" className="w-full" size="lg" disabled={!selectedRole || isLoading}>
@@ -123,7 +136,7 @@ export default function LoginPage() {
                                 </Button>
 
                                 <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
-                                    Don't have an account? <Link to="/register" className="font-medium text-violet-600 dark:text-violet-400 hover:underline">Sign up</Link>
+                                    Don't have an account? <Link to="/register" className="font-medium text-zinc-900 dark:text-white hover:underline">Sign up</Link>
                                 </p>
                             </form>
                         </CardContent>
