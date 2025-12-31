@@ -34,7 +34,7 @@ const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 
 
 export default function LandingPage() {
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-zinc-950">
             <Header />
 
             {/* Hero Section */}

@@ -48,7 +48,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50 flex">
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex">
             <div className="hidden lg:flex lg:w-1/2 bg-zinc-900 text-white p-12 flex-col justify-between">
                 <Link to="/" className="flex items-center gap-2 group">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-zinc-900 transition-transform group-hover:scale-105">

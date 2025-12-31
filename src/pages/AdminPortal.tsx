@@ -51,7 +51,7 @@ const AdminPortal = () => {
     );
 
     return (
-        <div className="min-h-screen bg-zinc-50">
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
             <header className="sticky top-0 z-50 bg-white border-b border-zinc-100">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">

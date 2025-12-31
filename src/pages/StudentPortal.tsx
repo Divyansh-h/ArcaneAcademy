@@ -96,92 +96,79 @@ const StudentPortal = () => {
                             </div>
                             <Card className="border-0 shadow-lg">
                                 <CardHeader className="pb-4"><div className="flex items-center justify-between"><CardTitle className="text-lg">Recent Grades</CardTitle><Badge variant="secondary"><BarChart3 className="h-3 w-3 mr-1" />Grade Analytics</Badge></div></CardHeader>
-                                <CardContent>
-                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                                        {subjects.map((subject) => (
-                                            <div key={subject.code} className="p-4 rounded-xl bg-zinc-50 text-center hover:bg-zinc-100 transition-colors">
-                                                <p className="text-2xl font-bold text-zinc-900 mb-1">{subject.grade}</p>
-                                                <p className="text-sm font-medium text-zinc-700 truncate">{subject.name}</p>
-                                                <p className="text-xs text-zinc-500">{subject.code}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
 
-                        <TabsContent value="assignments">
-                            <Card className="border-0 shadow-lg">
-                                <CardHeader><CardTitle>All Assignments</CardTitle><CardDescription>View and manage your assignments across all subjects</CardDescription></CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        {assignments.map((assignment) => (
-                                            <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 hover:bg-zinc-100 transition-colors flex items-center justify-between">
-                                                <div className="flex items-center gap-4">
-                                                    <div className={`p-2 rounded-lg ${assignment.status === "graded" ? "bg-emerald-100" : assignment.status === "submitted" ? "bg-blue-100" : "bg-amber-100"}`}>
-                                                        {assignment.status === "graded" ? <CheckCircle className="h-5 w-5 text-emerald-600" /> : assignment.status === "submitted" ? <Clock className="h-5 w-5 text-blue-600" /> : <AlertCircle className="h-5 w-5 text-amber-600" />}
+                                <TabsContent value="assignments">
+                                    <Card className="border-0 shadow-lg">
+                                        <CardHeader><CardTitle>All Assignments</CardTitle><CardDescription>View and manage your assignments across all subjects</CardDescription></CardHeader>
+                                        <CardContent>
+                                            <div className="space-y-4">
+                                                {assignments.map((assignment) => (
+                                                    <div key={assignment.id} className="p-4 rounded-xl bg-zinc-50 hover:bg-zinc-100 transition-colors flex items-center justify-between">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className={`p-2 rounded-lg ${assignment.status === "graded" ? "bg-emerald-100" : assignment.status === "submitted" ? "bg-blue-100" : "bg-amber-100"}`}>
+                                                                {assignment.status === "graded" ? <CheckCircle className="h-5 w-5 text-emerald-600" /> : assignment.status === "submitted" ? <Clock className="h-5 w-5 text-blue-600" /> : <AlertCircle className="h-5 w-5 text-amber-600" />}
+                                                            </div>
+                                                            <div><h4 className="font-medium text-zinc-900">{assignment.title}</h4><p className="text-sm text-zinc-500">{assignment.subject} • Due: {assignment.dueDate}</p></div>
+                                                        </div>
+                                                        <div className="flex items-center gap-4">
+                                                            {assignment.grade && <Badge variant="success">{assignment.grade}</Badge>}
+                                                            {assignment.status === "pending" && <Button size="sm">Submit</Button>}
+                                                            <Button variant="ghost" size="sm"><ChevronRight className="h-4 w-4" /></Button>
+                                                        </div>
                                                     </div>
-                                                    <div><h4 className="font-medium text-zinc-900">{assignment.title}</h4><p className="text-sm text-zinc-500">{assignment.subject} • Due: {assignment.dueDate}</p></div>
-                                                </div>
-                                                <div className="flex items-center gap-4">
-                                                    {assignment.grade && <Badge variant="success">{assignment.grade}</Badge>}
-                                                    {assignment.status === "pending" && <Button size="sm">Submit</Button>}
-                                                    <Button variant="ghost" size="sm"><ChevronRight className="h-4 w-4" /></Button>
-                                                </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
-
-                        <TabsContent value="subjects">
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {subjects.map((subject) => (
-                                    <Card key={subject.code} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                                        <CardContent className="p-6">
-                                            <div className="flex items-start justify-between mb-4"><div className="p-3 bg-zinc-100 rounded-xl"><BookOpen className="h-5 w-5 text-zinc-700" /></div><Badge variant="outline">{subject.credits} Credits</Badge></div>
-                                            <h3 className="font-semibold text-lg text-zinc-900 mb-1">{subject.name}</h3>
-                                            <p className="text-sm text-zinc-500 mb-4">{subject.code}</p>
-                                            <Separator className="my-4" />
-                                            <div className="flex items-center justify-between"><span className="text-sm text-zinc-500">Current Grade</span><span className="text-2xl font-bold text-zinc-900">{subject.grade}</span></div>
                                         </CardContent>
                                     </Card>
-                                ))}
-                            </div>
-                        </TabsContent>
+                                </TabsContent>
 
-                        <TabsContent value="grades">
-                            <Card className="border-0 shadow-lg">
-                                <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <div><CardTitle>Grade Summary</CardTitle><CardDescription>Your academic performance for {studentData.semester}</CardDescription></div>
-                                        <div className="text-right"><p className="text-sm text-zinc-500">Current CGPA</p><p className="text-3xl font-bold text-zinc-900">{studentData.cgpa}</p></div>
+                                <TabsContent value="subjects">
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {subjects.map((subject) => (
+                                            <Card key={subject.code} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                                                <CardContent className="p-6">
+                                                    <div className="flex items-start justify-between mb-4"><div className="p-3 bg-zinc-100 rounded-xl"><BookOpen className="h-5 w-5 text-zinc-700" /></div><Badge variant="outline">{subject.credits} Credits</Badge></div>
+                                                    <h3 className="font-semibold text-lg text-zinc-900 mb-1">{subject.name}</h3>
+                                                    <p className="text-sm text-zinc-500 mb-4">{subject.code}</p>
+                                                    <Separator className="my-4" />
+                                                    <div className="flex items-center justify-between"><span className="text-sm text-zinc-500">Current Grade</span><span className="text-2xl font-bold text-zinc-900">{subject.grade}</span></div>
+                                                </CardContent>
+                                            </Card>
+                                        ))}
                                     </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full">
-                                            <thead><tr className="border-b border-zinc-200"><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Subject</th><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Code</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Credits</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade Points</th></tr></thead>
-                                            <tbody>
-                                                {subjects.map((subject) => (
-                                                    <tr key={subject.code} className="border-b border-zinc-100 hover:bg-zinc-50">
-                                                        <td className="py-4 px-4 font-medium text-zinc-900">{subject.name}</td>
-                                                        <td className="py-4 px-4 text-zinc-600">{subject.code}</td>
-                                                        <td className="py-4 px-4 text-center text-zinc-600">{subject.credits}</td>
-                                                        <td className="py-4 px-4 text-center"><Badge variant="outline">{subject.grade}</Badge></td>
-                                                        <td className="py-4 px-4 text-center font-medium text-zinc-900">{subject.grade === "A+" ? 10 : subject.grade === "A" ? 9 : subject.grade === "A-" ? 8.5 : 8}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
-                    </Tabs>
+                                </TabsContent>
+
+                                <TabsContent value="grades">
+                                    <Card className="border-0 shadow-lg">
+                                        <CardHeader>
+                                            <div className="flex items-center justify-between">
+                                                <div><CardTitle>Grade Summary</CardTitle><CardDescription>Your academic performance for {studentData.semester}</CardDescription></div>
+                                                <div className="text-right"><p className="text-sm text-zinc-500">Current CGPA</p><p className="text-3xl font-bold text-zinc-900">{studentData.cgpa}</p></div>
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
+                                                    <thead><tr className="border-b border-zinc-200"><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Subject</th><th className="text-left py-3 px-4 text-sm font-medium text-zinc-500">Code</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Credits</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade</th><th className="text-center py-3 px-4 text-sm font-medium text-zinc-500">Grade Points</th></tr></thead>
+                                                    <tbody>
+                                                        {subjects.map((subject) => (
+                                                            <tr key={subject.code} className="border-b border-zinc-100 hover:bg-zinc-50">
+                                                                <td className="py-4 px-4 font-medium text-zinc-900">{subject.name}</td>
+                                                                <td className="py-4 px-4 text-zinc-600">{subject.code}</td>
+                                                                <td className="py-4 px-4 text-center text-zinc-600">{subject.credits}</td>
+                                                                <td className="py-4 px-4 text-center"><Badge variant="outline">{subject.grade}</Badge></td>
+                                                                <td className="py-4 px-4 text-center font-medium text-zinc-900">{subject.grade === "A+" ? 10 : subject.grade === "A" ? 9 : subject.grade === "A-" ? 8.5 : 8}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                            </Tabs>
+                        </motion.div>
                 </motion.div>
-            </motion.div>
         </PortalLayout>
     );
 }
