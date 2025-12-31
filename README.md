@@ -51,6 +51,21 @@
    npm run build
    ```
 
-## 📝 Note
+## � Deployment (Vercel)
+
+This project is optimized for deployment on **Vercel**.
+
+1. **Push to GitHub**: Ensure your code is pushed to a GitHub repository.
+2. **Log in to Vercel**: Go to [vercel.com](https://vercel.com) and log in.
+3. **Import Project**: Click "Add New..." -> "Project" and select your `ArcaneAcademy` repository.
+4. **Configure**:
+   - Framework Preset: **Vite**
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+5. **Deploy**: Click "Deploy". Vercel will build and host your site automatically!
+
+> **Note**: Since this is a Client-Side App (SPA), a `vercel.json` file has been added to handle routing redirects correctly.
+
+## �📝 Note
 
 This repository hosts the frontend code. The backend services (Microservices architecture with Node.js, Express, RabbitMQ, and PostgreSQL) are managed separately or in a private repository effectively decoupled via API contracts.
