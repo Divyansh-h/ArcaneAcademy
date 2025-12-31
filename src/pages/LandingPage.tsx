@@ -41,7 +41,7 @@ export default function LandingPage() {
             <section className="relative pt-32 pb-20 px-6 overflow-hidden">
                 <div className="absolute inset-0 -z-10">
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-zinc-100 dark:bg-zinc-800/50 rounded-full blur-3xl opacity-50" />
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-50 dark:bg-violet-900/20 rounded-full blur-3xl opacity-50" />
+                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-100 dark:bg-zinc-800/30 rounded-full blur-3xl opacity-50" />
                 </div>
 
                 <div className="max-w-7xl mx-auto">
@@ -75,13 +75,13 @@ export default function LandingPage() {
                         </motion.div>
 
                         <motion.div className="relative" variants={itemVariants}>
-                            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-purple-500/20 dark:from-violet-500/10 dark:to-purple-500/10 rounded-3xl transform rotate-3 -z-10" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-zinc-200 to-zinc-300 dark:from-zinc-800 dark:to-zinc-700 rounded-3xl transform rotate-3 -z-10" />
                             <Card className="relative rounded-3xl p-8 shadow-2xl">
                                 <CardContent className="p-0 space-y-6">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center space-x-3">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
-                                                <GraduationCap className="h-6 w-6 text-white" />
+                                            <div className="w-12 h-12 bg-zinc-900 dark:bg-white rounded-xl flex items-center justify-center">
+                                                <GraduationCap className="h-6 w-6 text-white dark:text-zinc-900" />
                                             </div>
                                             <div>
                                                 <div className="font-semibold text-zinc-900 dark:text-white">Arcane Dashboard</div>
@@ -101,7 +101,7 @@ export default function LandingPage() {
                                     <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
                                         <div className="flex items-center justify-between">
                                             <span className="font-semibold text-zinc-900 dark:text-white">Overall CGPA</span>
-                                            <span className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">8.7</span>
+                                            <span className="text-3xl font-bold text-zinc-900 dark:text-white">8.7</span>
                                         </div>
                                     </div>
                                 </CardContent>
@@ -126,8 +126,8 @@ export default function LandingPage() {
                                 <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
                                     <CardContent className="p-6">
                                         <div className="flex items-center justify-between mb-4">
-                                            <div className="p-3 bg-gradient-to-br from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30 rounded-xl">
-                                                <feature.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
+                                            <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+                                                <feature.icon className="h-6 w-6 text-zinc-700 dark:text-zinc-300" />
                                             </div>
                                             <Badge variant="default">{feature.highlight}</Badge>
                                         </div>
