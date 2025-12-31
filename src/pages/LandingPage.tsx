@@ -171,7 +171,7 @@ export default function LandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-br from-zinc-900 via-violet-950 to-zinc-900 text-white">
+            <section className="py-24 bg-zinc-900 text-white">
                 <motion.div className="max-w-4xl mx-auto text-center px-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                     <h2 className="text-4xl font-bold mb-6">Ready to transform your grading experience?</h2>
                     <p className="text-xl text-zinc-300 mb-8 max-w-2xl mx-auto">Join thousands of educators and students who trust Arcane Academy for their academic management needs.</p>
