@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { GraduationCap, Bell, LogOut } from "lucide-react";
+import { GraduationCap, Bell, Settings, LogOut } from "lucide-react";
 
 interface PortalLayoutProps {
     children: React.ReactNode;
@@ -15,29 +15,32 @@ interface PortalLayoutProps {
 export function PortalLayout({ children, portalName, userName, userBatch }: PortalLayoutProps) {
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-            <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200/50 dark:border-zinc-800/50">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex items-center justify-between h-16">
+            <header className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-800">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                    <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <Link to="/" className="flex items-center gap-2.5 group">
-                                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-600 text-white transition-transform duration-200 group-hover:scale-105">
+                            <Link to="/" className="flex items-center gap-2 group">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 transition-transform group-hover:scale-105">
                                     <GraduationCap className="h-5 w-5" />
                                 </div>
-                                <span className="text-lg font-semibold text-zinc-900 dark:text-white">
-                                    Arcane<span className="text-zinc-400">Academy</span>
+                                <span className="text-xl font-bold text-zinc-900 dark:text-white">
+                                    Arcane<span className="text-zinc-500 dark:text-zinc-400">Academy</span>
                                 </span>
                             </Link>
                             <Badge variant="secondary" className="hidden sm:flex">{portalName}</Badge>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                             <ThemeToggle />
                             <button className="relative p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                <Bell className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
-                                <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-violet-600 rounded-full" />
+                                <Bell className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                                <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" />
                             </button>
-                            <div className="flex items-center gap-3 pl-4 ml-2 border-l border-zinc-200 dark:border-zinc-800">
-                                <Avatar className="h-8 w-8">
-                                    <AvatarFallback className="bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 text-sm font-medium">
+                            <button className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                                <Settings className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                            </button>
+                            <div className="flex items-center gap-3 pl-4 border-l border-zinc-200 dark:border-zinc-700">
+                                <Avatar>
+                                    <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-600 text-white">
                                         {userName.split(' ').map(n => n[0]).join('')}
                                     </AvatarFallback>
                                 </Avatar>
@@ -47,7 +50,7 @@ export function PortalLayout({ children, portalName, userName, userBatch }: Port
                                 </div>
                             </div>
                             <Link to="/login">
-                                <Button variant="ghost" size="icon" className="text-zinc-500">
+                                <Button variant="ghost" size="sm">
                                     <LogOut className="h-4 w-4" />
                                 </Button>
                             </Link>

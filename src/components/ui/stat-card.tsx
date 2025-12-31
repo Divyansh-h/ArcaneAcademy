@@ -13,22 +13,22 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon: Icon, description, trend }: StatCardProps) {
     return (
-        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
-            <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-3">
-                    <div className="p-2.5 bg-violet-50 dark:bg-violet-900/20 rounded-xl">
-                        <Icon className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+        <Card className="border-0 shadow-lg">
+            <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+                        <Icon className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
                     </div>
                     {trend && (
-                        <Badge variant="success" className="text-xs font-medium">
+                        <Badge variant="success" className="text-xs">
                             <TrendingUp className="h-3 w-3 mr-1" />
                             {trend}
                         </Badge>
                     )}
                 </div>
-                <div className="space-y-0.5">
-                    <p className="text-2xl font-semibold text-zinc-900 dark:text-white">{value}</p>
-                    <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{title}</p>
+                <div className="space-y-1">
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">{title}</p>
+                    <p className="text-2xl font-bold text-zinc-900 dark:text-white">{value}</p>
                     <p className="text-xs text-zinc-400 dark:text-zinc-500">{description}</p>
                 </div>
             </CardContent>
