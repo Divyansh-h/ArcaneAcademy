@@ -36,16 +36,19 @@ export default function LoginPage() {
                 password
             });
 
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            // Handle nested response structure from backend
+            const authData = response.data.data || response.data;
+            localStorage.setItem('token', authData.token);
+            localStorage.setItem('user', JSON.stringify(authData.user));
             if (rememberMe) {
                 localStorage.setItem('rememberMe', 'true');
             }
 
             navigate(`/${selectedRole}`);
-        } catch (error) {
+        } catch (error: any) {
             console.error('Login failed:', error);
-            alert('Login failed. Please check your credentials.');
+            const errorMsg = error.response?.data?.message || 'Login failed. Please check your credentials.';
+            alert(errorMsg);
         } finally {
             setIsLoading(false);
         }

@@ -1,5 +1,11 @@
+
 node_modules
-backend
-.DS_Store
 dist
+.DS_Store
 .env
+
+# Backend folders to ignore
+backend/
+BackendFinal/
+BackendJava/
+BackendPython/

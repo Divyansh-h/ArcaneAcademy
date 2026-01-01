@@ -6,15 +6,18 @@ import { GraduationCap, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-    { name: "Features", href: "#features" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Features", href: "/#features", type: "anchor" },
+    { name: "About", href: "/about", type: "link" },
+    { name: "Pricing", href: "/pricing", type: "link" },
+    { name: "Careers", href: "/careers", type: "link" },
 ];
 
 export function Header() {
     const location = useLocation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const isLandingPage = location.pathname === "/";
+
+    // Header should show nav on landing, about, pricing, careers pages
+    const showNav = ["/", "/about", "/pricing", "/careers", "/privacy", "/terms"].includes(location.pathname);
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-800">
@@ -28,19 +31,19 @@ export function Header() {
                     </span>
                 </Link>
 
-                {isLandingPage && (
-                    <div className="hidden lg:flex lg:gap-x-8">
-                        {navigation.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-                            >
+                <div className="hidden lg:flex lg:gap-x-8">
+                    {navigation.map((item) => (
+                        item.type === 'link' ? (
+                            <Link key={item.name} to={item.href} className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                                {item.name}
+                            </Link>
+                        ) : (
+                            <a key={item.name} href={item.href} className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                                 {item.name}
                             </a>
-                        ))}
-                    </div>
-                )}
+                        )
+                    ))}
+                </div>
 
                 <div className="flex items-center gap-3">
                     <ThemeToggle />
@@ -64,15 +67,26 @@ export function Header() {
 
             <div className={cn("lg:hidden", mobileMenuOpen ? "block" : "hidden")}>
                 <div className="space-y-1 px-4 pb-4 pt-2 bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800">
-                    {isLandingPage && navigation.map((item) => (
-                        <a
-                            key={item.name}
-                            href={item.href}
-                            className="block rounded-lg px-3 py-2 text-base font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            {item.name}
-                        </a>
+                    {showNav && navigation.map((item) => (
+                        item.type === 'link' ? (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className="block rounded-lg px-3 py-2 text-base font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {item.name}
+                            </Link>
+                        ) : (
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                className="block rounded-lg px-3 py-2 text-base font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {item.name}
+                            </a>
+                        )
                     ))}
                     <Link
                         to="/login"

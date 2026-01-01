@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base URL pointing to the Gateway
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'http://localhost:3000/api',
     headers: {
         'Content-Type': 'application/json',
     },

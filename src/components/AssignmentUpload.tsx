@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,13 +14,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
-interface AssignmentUploadProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    classId: string;
-}
-
-export function AssignmentUpload({ open, onOpenChange, classId }: AssignmentUploadProps) {
+export function AssignmentUpload({ open, onOpenChange, classId }: { open: boolean, onOpenChange: (open: boolean) => void, classId: string }) {
     const [title, setTitle] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
@@ -33,11 +27,12 @@ export function AssignmentUpload({ open, onOpenChange, classId }: AssignmentUplo
         try {
             const formData = new FormData();
             formData.append('title', title);
-            formData.append('classId', classId);
-            formData.append('teacherId', 'teacher-123'); // From Auth Context in real app
-            formData.append('assignmentFile', file);
+            formData.append('class_id', classId);
+            formData.append('teacher_id', JSON.parse(localStorage.getItem('user') || '{}').id || '');
+            formData.append('file', file);
+            formData.append('description', 'Uploaded by Admin');
 
-            await axios.post('http://localhost:8000/api/grading/assignments', formData, {
+            await api.post('/grading/assignments', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 

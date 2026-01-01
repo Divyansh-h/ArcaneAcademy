@@ -61,7 +61,7 @@ export default function LandingPage() {
 
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <Link to="/register"><Button size="lg" className="w-full sm:w-auto">Get Started<ArrowRight className="h-5 w-5 ml-2" /></Button></Link>
-                                <Link to="/login"><Button variant="outline" size="lg" className="w-full sm:w-auto"><Play className="h-5 w-5 mr-2" />Watch Demo</Button></Link>
+                                <Link to="/demo"><Button variant="outline" size="lg" className="w-full sm:w-auto"><Play className="h-5 w-5 mr-2" />Watch Demo</Button></Link>
                             </div>
 
                             <motion.div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-zinc-100 dark:border-zinc-800" variants={itemVariants}>

@@ -93,11 +93,12 @@ const GradingInterface = () => {
 
             // 4. Save
             const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            // const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 
             // 5. Upload to Backend
             const formData = new FormData();
-            formData.append('gradedFile', blob, 'graded.pdf');
+            // Cast to any to avoid BlobPart type mismatch with older @types/node or react-pdf definitions
+            formData.append('gradedFile', new Blob([pdfBytes as any], { type: 'application/pdf' }), 'graded.pdf');
             formData.append('grade', '90'); // Example grade, should be an input
             formData.append('feedback', 'Good job!');
 
