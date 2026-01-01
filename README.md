@@ -1,34 +1,32 @@
-# Arcane Academy 🎓✨
+# Arcane Academy
 
-**Arcane Academy** is a modern, AI-powered grading and learning management platform designed to streamline the assessment process for educational institutions. This repository contains the **Frontend** application, built with React, TypeScript, and Tailwind CSS.
+Arcane Academy is a grading and learning management platform I'm working on to help schools manage assessments. This repo holds the frontend part of the application, which I built using React, TypeScript, and Tailwind CSS.
 
-## 🚀 Features
+## Features
 
 - **Role-Based Portals**:
-  - **Admin Portal**: Manage users (students/teachers), classes, and oversee system settings.
-  - **Teacher Portal**: Create classes, upload assignments, and grade student submissions with advanced PDF annotation tools.
-  - **Student Portal**: View enrolled classes, submit assignments (PDF), and review graded feedback.
+  - **Admin Portal**: For managing users and classes.
+  - **Teacher Portal**: Allows teachers to create classes and grade assignments using PDF annotation tools.
+  - **Student Portal**: Where students can view classes and submit their work.
 
-- **Smart PDF Grading**:
-  - Built-in PDF viewer with annotation capabilities (Ticks, Crosses, Comments).
-  - "Save & Grade" functionality that burns annotations directly onto the submission file.
-  - Asynchronous processing for handling large grading tasks significantly.
+- **PDF Grading**:
+  - Includes a PDF viewer where you can add annotations like ticks and comments.
+  - You can save graded PDFs with the annotations baked in.
 
-- **Modern UI/UX**:
-  - Responsive design using **Tailwind CSS**.
-  - Interactive components powered by **Radix UI** and **Shadcn/UI**.
-  - Smooth animations and intuitive navigation.
+- **UI/UX**:
+  - The interface is responsive and built with Tailwind CSS.
+  - Uses Radix UI and Shadcn/UI for components.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **Framework**: React (Vite)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS, Shadcn/UI
-- **State Management**: React Hooks
-- **PDF Handling**: `react-pdf`, `pdf-lib`
-- **HTTP Client**: Axios
+- React (Vite)
+- TypeScript
+- Tailwind CSS & Shadcn/UI
+- React Hooks for state management
+- `react-pdf` & `pdf-lib` for PDF handling
+- Axios for API calls
 
-## 📦 Installation
+## Installation
 
 1. **Clone the repository**:
    ```bash
@@ -51,21 +49,6 @@
    npm run build
    ```
 
-## � Deployment (Vercel)
+## Note
 
-This project is optimized for deployment on **Vercel**.
-
-1. **Push to GitHub**: Ensure your code is pushed to a GitHub repository.
-2. **Log in to Vercel**: Go to [vercel.com](https://vercel.com) and log in.
-3. **Import Project**: Click "Add New..." -> "Project" and select your `ArcaneAcademy` repository.
-4. **Configure**:
-   - Framework Preset: **Vite**
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-5. **Deploy**: Click "Deploy". Vercel will build and host your site automatically!
-
-> **Note**: Since this is a Client-Side App (SPA), a `vercel.json` file has been added to handle routing redirects correctly.
-
-## �📝 Note
-
-This repository hosts the frontend code. The backend services (Microservices architecture with Node.js, Express, RabbitMQ, and PostgreSQL) are managed separately or in a private repository effectively decoupled via API contracts.
+This repository only contains the frontend code. The backend services (built with Node.js, Express, etc.) are kept in a separate place/repository.
