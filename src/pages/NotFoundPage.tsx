@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Ghost, Search, Home } from "lucide-react";
+import { Ghost, Search, Home } from "lucide-react";
 
 export default function NotFoundPage() {
     return (

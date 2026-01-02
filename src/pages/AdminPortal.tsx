@@ -54,12 +54,13 @@ const AdminPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
     const adminData = { name: adminName, role: "Super Admin" };
 
     // Stats State: Use demo data or defaults
-    const [stats, setStats] = useState(demoMode ? demoData.admin.stats : {
+    const [stats] = useState(demoMode ? demoData.admin.stats : {
         totalStudents: 0, totalTeachers: 0, totalSubjects: 0, totalBatches: 0, activeAssignments: 0, pendingGrading: 0
     });
 
     // Recent users (placeholder for now)
-    const [recentUsers, setRecentUsers] = useState<any[]>([]);
+    // Recent users (placeholder for now)
+    // removed unused recentUsers state
 
     // Add User Modal State
     const [showAddUserModal, setShowAddUserModal] = useState(false);

@@ -1,11 +1,8 @@
 
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Footer } from "@/components/layout/Footer";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminPortal from "./AdminPortal";
 import TeacherPortal from "./TeacherPortal";
 import StudentPortal from "./StudentPortal";

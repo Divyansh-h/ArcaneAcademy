@@ -121,7 +121,7 @@ const StudentPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
     });
 
     // Sort: Pending first
-    mergedAssignments.sort((a, b) => (a.status === 'pending' ? -1 : 1));
+    mergedAssignments.sort((a, _b) => (a.status === 'pending' ? -1 : 1));
 
     if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-zinc-900"></div></div>;
 

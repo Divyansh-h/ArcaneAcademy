@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Input } from "@/components/ui/input";
-import { GraduationCap, BookOpen, FileText, Users, CheckCircle, Bell, Settings, LogOut, Plus, Edit, Eye, Upload, X } from "lucide-react";
+import { Plus, Eye, X } from "lucide-react";
 import api from "@/lib/api";
 
 import ReactDOM from "react-dom";
@@ -24,8 +21,8 @@ const TeacherPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
     // Data state
     const [assignments, setAssignments] = useState<any[]>([]);
     const [pendingSubmissions, setPendingSubmissions] = useState<any[]>([]);
-    const [recentActivity, setRecentActivity] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    // removed unused recentActivity state
+    // removed unused loading state
 
     // Create assignment modal state
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -60,7 +57,7 @@ const TeacherPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
                 // Also fetch global/admin assignments
                 const adminAssignmentsRes = await api.get(`/grading/assignments?class_id=ADMIN_UPLOAD`);
 
-                let allAssignments = [];
+                let allAssignments: any[] = [];
                 if (assignmentsRes.data.success) {
                     allAssignments = [...assignmentsRes.data.data];
                 }
@@ -85,20 +82,15 @@ const TeacherPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
                     }));
                     setPendingSubmissions(submissions);
                 }
-
-                setLoading(false);
             } catch (error) {
                 console.error("Failed to fetch data:", error);
-                setLoading(false);
             }
         };
 
         if (user.id) {
             fetchData();
-        } else {
-            setLoading(false);
         }
-    }, [user.id, showCreateModal, showGradeModal]); // Refresh when modals close
+    }, [user.id]); // Removed showCreateModal/showGradeModal from deps to avoid infinite loops/unnecessary fetches
 
     const handleCreateAssignment = async () => {
         if (!assignmentTitle || !assignmentClass) {
@@ -185,18 +177,6 @@ const TeacherPortal = ({ demoMode = false }: { demoMode?: boolean }) => {
     const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
     const totalPendingGrading = pendingSubmissions.filter(s => s.status === 'pending').length;
-    // Mock simple stats based on loaded data
-    const totalStudents = classes.reduce((sum, c) => sum + c.students, 0);
-
-    // Modal Components
-    const StatCard = ({ title, value, icon: Icon, description }: { title: string; value: string | number; icon: React.ElementType; description: string }) => (
-        <Card className="border-0 shadow-lg">
-            <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4"><div className="p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800"><Icon className="h-5 w-5 text-zinc-700 dark:text-zinc-300" /></div></div>
-                <div className="space-y-1"><p className="text-sm text-zinc-500 dark:text-zinc-400">{title}</p><p className="text-2xl font-bold text-zinc-900 dark:text-white">{value}</p><p className="text-xs text-zinc-400 dark:text-zinc-500">{description}</p></div>
-            </CardContent>
-        </Card>
-    );
 
     const CreateAssignmentModal = ({ showCreateModal, setShowCreateModal, assignmentTitle, setAssignmentTitle, assignmentDescription, setAssignmentDescription, assignmentClass, setAssignmentClass, classes, selectedFile, handleFileSelect, fileInputRef, uploadMessage, handleCreateAssignment, isUploading }: any) => {
         if (!showCreateModal) return null;

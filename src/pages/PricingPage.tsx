@@ -4,8 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Zap, Shield } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CheckCircle } from "lucide-react";
 
 export default function PricingPage() {
     const plans = [

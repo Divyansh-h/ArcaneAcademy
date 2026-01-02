@@ -7,29 +7,32 @@ interface StatCardProps {
     title: string;
     value: string | number;
     icon: LucideIcon;
-    description: string;
+    description?: string;
     trend?: string;
+    change?: string;
+    changeType?: 'positive' | 'negative' | 'neutral';
+    color?: string;
 }
 
-export function StatCard({ title, value, icon: Icon, description, trend }: StatCardProps) {
+export function StatCard({ title, value, icon: Icon, description, trend, change, changeType, color }: StatCardProps) {
     return (
         <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
-                        <Icon className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
+                    <div className={`p-3 rounded-xl ${color || "bg-zinc-100 dark:bg-zinc-800"}`}>
+                        <Icon className={`h-5 w-5 ${color ? "text-current" : "text-zinc-700 dark:text-zinc-300"}`} />
                     </div>
-                    {trend && (
-                        <Badge variant="success" className="text-xs">
+                    {(trend || change) && (
+                        <Badge variant={changeType === 'positive' || trend ? "default" : changeType === 'negative' ? "destructive" : "secondary"} className="text-xs">
                             <TrendingUp className="h-3 w-3 mr-1" />
-                            {trend}
+                            {trend || change}
                         </Badge>
                     )}
                 </div>
                 <div className="space-y-1">
                     <p className="text-sm text-zinc-500 dark:text-zinc-400">{title}</p>
                     <p className="text-2xl font-bold text-zinc-900 dark:text-white">{value}</p>
-                    <p className="text-xs text-zinc-400 dark:text-zinc-500">{description}</p>
+                    {description && <p className="text-xs text-zinc-400 dark:text-zinc-500">{description}</p>}
                 </div>
             </CardContent>
         </Card>

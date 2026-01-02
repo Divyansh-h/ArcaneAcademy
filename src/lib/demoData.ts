@@ -1,5 +1,5 @@
 
-import { GraduationCap, BookOpen, Users, Building, Calendar, BarChart3, CloudRain } from "lucide-react";
+
 
 export const demoData = {
     admin: {

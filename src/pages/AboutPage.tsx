@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Shield, Globe, Award, Heart, Zap } from "lucide-react";
+import { Shield, Globe, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
