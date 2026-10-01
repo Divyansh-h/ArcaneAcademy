@@ -10,6 +10,8 @@ const envSchema = z.object({
   
   // Client-side variables (Must start with NEXT_PUBLIC_)
   NEXT_PUBLIC_API_URL: z.string().url().default('http://localhost:3000/api'),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
 });
 
 // Execute the validation
